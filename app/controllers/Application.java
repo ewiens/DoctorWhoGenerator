@@ -1,15 +1,23 @@
 package controllers;
 
-import play.*;
-import play.mvc.*;
+import play.data.Form;
+import play.db.jpa.Transactional;
+import play.mvc.Controller;
+import play.mvc.Result;
 
 import models.Task;
 
 import views.html.index;
+
+import services.TaskPersistenceService;
+import services.TaskPersistenceServiceImpl;
+
 import java.util.List;
-import java.util.ArrayList;
+
 
 public class Application extends Controller {
+
+    private static final TaskPersistenceService taskPersist = new TaskPersistenceServiceImpl();
 
     public static Result index() {
         return ok(index.render("Good Morning Baltimore",play.data.Form.form(models.Task.class))); 
@@ -23,8 +31,8 @@ public class Application extends Controller {
     		return badRequest(index.render("Good Morning Baltimore", form));
     	}else{
     		models.Task task =form.get();
-            play.db.jpa.JPA.em().persist(task);
-    		return redirect(routes.Application.index());
+            taskPersist.saveTask(task);
+            return redirect(routes.Application.index());
     	}
     }
     @play.db.jpa.Transactional
@@ -34,12 +42,7 @@ public class Application extends Controller {
         //     .setParameter("id",searchId)
         //     .setParameter("c","Chocolate cake is good")
         //     .getSingleResult();
-
-        List<Task> tasks = play.db.jpa.JPA.em().createQuery("from Task", Task.class).getResultList();
-
-        // java.util.List<models.Task> tasks
-            // .createQuery("From Task t WHERE t.id = :id AND t.contents = :c", models.Task.class)
-            // .setParameter("id", searchId);
+        List<Task> tasks = taskPersist.fetchAllTasks();
         return ok(play.libs.Json.toJson(tasks));
     }
 
