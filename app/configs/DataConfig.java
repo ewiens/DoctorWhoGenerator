@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 public class DataConfig {
 
 	@Bean
-	public EntityManagerFactory entityManagerFactor(){
+	public EntityManagerFactory entityManagerFactory(){
 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		vendorAdapter.setShowSql(false);
 		vendorAdapter.setGenerateDdl(true);
@@ -30,6 +30,7 @@ public class DataConfig {
 		entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
 		entityManagerFactory.setDataSource(dataSource());
 		entityManagerFactory.afterPropertiesSet();
+
 		return entityManagerFactory.getObject();
 	}
 
@@ -38,5 +39,11 @@ public class DataConfig {
     	// return the datasource from the play framework.
     	return DB.getDataSource();
     }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(){
+    	return new JpaTransactionManager(entityManagerFactory());
+    }
+
 
 }

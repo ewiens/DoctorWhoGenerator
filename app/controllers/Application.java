@@ -15,11 +15,17 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 @Named
 public class Application extends Controller {
 
     @Inject
     private TaskPersistenceService taskPersist;
+
+    private static final  Logger logger = LoggerFactory.getLogger(Application.class);
 
     public Result index() {
         return ok(index.render("Good Morning Baltimore",play.data.Form.form(models.Task.class))); 
@@ -34,6 +40,8 @@ public class Application extends Controller {
     	 }else{
     		models.Task task =form.get();
             taskPersist.saveTask(task);
+            logger.info("{} persisted to database", task);
+            // Add a toString method to task
             return redirect(routes.Application.index());
     	}
     }
@@ -47,5 +55,8 @@ public class Application extends Controller {
         List<Task> tasks = taskPersist.fetchAllTasks();
         return ok(play.libs.Json.toJson(tasks));
     }
+
+    // Add a logger factory and a logger
+
 
 }
