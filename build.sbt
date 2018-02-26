@@ -1,4 +1,4 @@
-name := """AdvWebProject"""
+name := "AdvWebProject"
 
 version := "1.0-SNAPSHOT"
 
@@ -20,7 +20,8 @@ libraryDependencies ++= Seq(
   "org.springframework" % "spring-core"            % "4.1.6.RELEASE",
   "org.springframework" % "spring-jdbc"            % "4.1.6.RELEASE",
   "org.springframework" % "spring-orm"             % "4.1.6.RELEASE",
-  "org.springframework" % "spring-tx"              % "4.1.6.RELEASE"
+  "org.springframework" % "spring-tx"              % "4.1.6.RELEASE",
+  "org.springframework" % "spring-test"            % "4.1.6.RELEASE" %  "test"
 )
 
 libraryDependencies+= "org.webjars" % "jquery" %"1.11.2"

@@ -56,7 +56,4 @@ public class Application extends Controller {
         return ok(play.libs.Json.toJson(tasks));
     }
 
-    // Add a logger factory and a logger
-
-
 }
