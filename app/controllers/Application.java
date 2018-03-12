@@ -37,13 +37,20 @@ public class Application extends Controller {
     	Form<Task> form = Form.form(Task.class).bindFromRequest();
     	if(form.hasErrors()){
     		return badRequest(index.render("Good Morning Baltimore", form));
-    	 }else{
-    		models.Task task =form.get();
-            taskPersist.saveTask(task);
-            logger.info("{} persisted to database", task);
-            // Add a toString method to task
-            return redirect(routes.Application.index());
-    	}
+    	  }
+          //else{
+    		// models.Task task =form.get();
+      //       taskPersist.saveTask(task);
+      //       logger.info("{} persisted to database", task);
+      //       // Add a toString method to task
+      //       return redirect(routes.Application.index());
+    	// }
+
+        Task task = new Task();
+        task.setContents(form.get().getContents());
+        log.debug("Storing task <{}> into DB", task);
+        taskPersist.saveTask();
+        return redirect(routes.Application,index());
     }
 
     public Result getTasks(){

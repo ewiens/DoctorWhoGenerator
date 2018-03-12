@@ -1,4 +1,4 @@
-name := """AdvWebProject"""
+name := "AdvWebProject"
 
 version := "1.0-SNAPSHOT"
 
