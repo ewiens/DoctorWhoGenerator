@@ -37,18 +37,11 @@ public class Application extends Controller {
     	Form<Task> form = Form.form(Task.class).bindFromRequest();
     	if(form.hasErrors()){
     		return badRequest(index.render("Good Morning Baltimore", form));
-    	  }
-          //else{
-    		// models.Task task =form.get();
-      //       taskPersist.saveTask(task);
-      //       logger.info("{} persisted to database", task);
-      //       // Add a toString method to task
-      //       return redirect(routes.Application.index());
-    	// }
+    	}
 
         Task task = new Task();
         task.setContents(form.get().getContents());
-        log.debug("Storing task <{}> into DB", task);
+        logger.debug(toString(task));
         taskPersist.saveTask();
         return redirect(routes.Application,index());
     }
@@ -60,10 +53,15 @@ public class Application extends Controller {
         //     .setParameter("c","Chocolate cake is good")
         //     .getSingleResult();
         List<Task> tasks = taskPersist.fetchAllTasks();
+        logger.info("Get tasks")
         return ok(play.libs.Json.toJson(tasks));
     }
 
-    // Add a logger factory and a logger
+    public String toString(Task mytask){
+        String myString;
+        myString = "Task " +mytask.getContents() + " persisted to database";
+        return myString;
 
+    }
 
 }
