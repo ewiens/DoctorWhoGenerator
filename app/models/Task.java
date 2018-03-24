@@ -22,7 +22,7 @@ public class Task {
 		return id;
 	}
 
-	public void setID(Integer id){
+	public void setID(Long id){
 		this.id = id;
 	}
 
