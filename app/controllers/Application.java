@@ -42,7 +42,7 @@ public class Application extends Controller {
         Task task = new Task();
         task.setContents(form.get().getContents());
         logger.debug(toString(task));
-        taskPersist.saveTask();
+        taskPersist.saveTask(task);
         return redirect(routes.Application,index());
     }
 
@@ -53,7 +53,7 @@ public class Application extends Controller {
         //     .setParameter("c","Chocolate cake is good")
         //     .getSingleResult();
         List<Task> tasks = taskPersist.fetchAllTasks();
-        logger.info("Get tasks")
+        logger.info("Get tasks");
         return ok(play.libs.Json.toJson(tasks));
     }
 
