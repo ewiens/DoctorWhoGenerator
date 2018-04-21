@@ -47,11 +47,6 @@ import org.slf4j.LoggerFactory;
      }
  
      public Result getTasks(){
-         // models.Task t = play.db.jpa.JPA.em()
-         //     .createQuery("FROM Task t WHERE t.id = :id AND t.contents = :c", models.Task.class)
-         //     .setParameter("id",searchId)
-         //     .setParameter("c","Chocolate cake is good")
-         //     .getSingleResult();
          List<Task> tasks = taskPersist.fetchAllTasks();
          return ok(play.libs.Json.toJson(tasks));
      }

@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-@Named
+@Named       
 public class TaskPersistenceServiceImpl implements TaskPersistenceService {
 
 	@PersistenceContext
@@ -48,7 +48,7 @@ public class TaskPersistenceServiceImpl implements TaskPersistenceService {
 	public boolean isTaskIDSet(Task task){
 	    boolean taskIDIsSet = false;
 		
-		if(!task.getID() == null){
+		if(task.getID() != null){
 			taskIDIsSet = true;
 		}
 		
