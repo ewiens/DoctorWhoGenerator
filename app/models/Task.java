@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "task_table")
+@Table(name = "user_table")
 public class Task {
 
 	@Id
@@ -15,7 +15,7 @@ public class Task {
 	private Long id;
 
 	@play.data.validation.Constraints.Required
-	@Column(name = "contents_col",nullable = false)
+	@Column(name = "user_name",nullable = false)
 	private String contents;
 
 	public Long getID(){

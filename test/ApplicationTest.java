@@ -36,9 +36,9 @@ public class ApplicationTest {
 
     @Test
     public void renderTemplate() {
-        Content html = views.html.index.render("GOOD MORNING BALTIMORE",play.data.Form.form(models.Task.class));
+        Content html = views.html.index.render("WELCOME",play.data.Form.form(models.Task.class));
         assertThat(contentType(html)).isEqualTo("text/html");
-        assertThat(contentAsString(html)).contains("GOOD MORNING BALTIMORE");
+        assertThat(contentAsString(html)).contains("WELCOME");
     }
     @Test
     public void testIndex() {

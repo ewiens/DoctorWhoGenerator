@@ -8,4 +8,6 @@ public interface TaskPersistenceService {
 	void saveTask(Task t);
 
 	List<Task> fetchAllTasks();
+
+	boolean verifyUser(Task t);	
 }

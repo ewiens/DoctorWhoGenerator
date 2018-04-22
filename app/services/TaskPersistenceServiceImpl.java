@@ -25,4 +25,13 @@ public class TaskPersistenceServiceImpl implements TaskPersistenceService {
 	public List<Task> fetchAllTasks(){
 		return em.createQuery("from Task", Task.class).getResultList();
 	}
+
+	@Override
+	public boolean verifyUser(Task task){
+
+		em.createQuery("FROM Task t WHERE t.contents =:c",models.Task.class)
+            .setParameter("c",task.getContents());
+        return true;
+	}
+
 }
