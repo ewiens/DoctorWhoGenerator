@@ -33,4 +33,10 @@ public class Task {
 	public void setContents(String contents){
 		this.contents = contents;
 	}
+
+	public String toString(){
+        String myString;
+        myString = "Task " + this.getContents();
+        return myString;
+    }
 }

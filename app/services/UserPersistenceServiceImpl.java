@@ -27,7 +27,7 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 
 	@Override
 	public boolean verifyUser(User user){
-		em.createQuery("FROM User user WHERE user.username =:c AND user.password = :p",models.Task.class)
+		em.createQuery("FROM User user WHERE user.username =:c AND user.password = :p",models.User.class)
             .setParameter("c",user.getUsername())
             .setParameter("p",user.getPassword());
         return true;
@@ -39,7 +39,7 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		if(user.getUsername() == null || user.getPassword() == null){
 			userIsIncomplete = true;
 		}
-		
+
 		return userIsIncomplete;
 		
     }
