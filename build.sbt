@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 name := "AdvWebProject"
+=======
+name := "play2torial"
+>>>>>>> 44691b7985ab60f68709bd25ec14fb3be81c3330
 
 version := "1.0-SNAPSHOT"
 

@@ -11,3 +11,4 @@ GET     /assets/*file                controllers.Assets.at(path="/public", file)
 GET     /logIn                       @controllers.Application.logIn()
 POST    /createUser                  @controllers.Application.createUser()
 GET     /createEpisode               @controllers.Application.createEpisode()
+

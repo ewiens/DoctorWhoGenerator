@@ -14,6 +14,7 @@
 	</appender>
 
 	<logger name = "doctor_who" level = "INFO" />
+
 	<logger name = "controllers" level = "INFO" />
 
 	<root level ="WARN">
