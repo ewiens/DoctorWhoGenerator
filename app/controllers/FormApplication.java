@@ -8,7 +8,7 @@ import models.Episode;
 
 import views.html.enterdata;
 
-import services.TaskPersistenceService;
+import services.EpisodePersistenceService;
 
 import java.util.List;
 
@@ -23,17 +23,17 @@ import org.slf4j.LoggerFactory;
 public class FormApplication extends Controller{
 
     @Inject
-    private TaskPersistenceService taskPersist;
+    private EpisodePersistenceService episodePersist;
 
     private static final  Logger logger = LoggerFactory.getLogger(FormApplication.class);
 
     public Result createEpisode() {
-        return ok(enterdata.render("Create your episode",play.data.Form.form(models.Task.class))); 
+        return ok(enterdata.render("Create your episode",play.data.Form.form(Episode.class))); 
     }
 
-    public Result somethingEpisode(){
+    // public Result somethingEpisode(){
 
     	
-    }
+    // }
 
 }

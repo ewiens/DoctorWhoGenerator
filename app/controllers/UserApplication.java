@@ -4,7 +4,6 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import models.Task;
 import models.User;
 
 import views.html.index;
@@ -26,6 +25,8 @@ public class UserApplication extends Controller {
 
     @Inject
     private UserPersistenceService taskPersist;
+    // @Inject
+    // private UserValidationService userValidate;
 
     private static final  Logger logger = LoggerFactory.getLogger(UserApplication.class);
 
@@ -45,6 +46,8 @@ public class UserApplication extends Controller {
         User user = new User();
         user.setUsername(form.get().getUsername());
         user.setPassword(form.get().getPassword());
+        // userValidate.checkUsername(user);
+
         logger.debug(toString()+ " persisted to database");
         taskPersist.saveUser(user);
         return redirect(routes.UserApplication.index());
@@ -69,10 +72,5 @@ public class UserApplication extends Controller {
         }
     }
 
-    // public Result getUsers(){
-    //     List<User> users = taskPersist.fetchAllUsers();
-    //     logger.info("Get users");
-    //     return ok(play.libs.Json.toJson(users));
-    // }
 
 }

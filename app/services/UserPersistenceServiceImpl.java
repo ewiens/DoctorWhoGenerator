@@ -27,10 +27,21 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 
 	@Override
 	public boolean verifyUser(User user){
-		em.createQuery("FROM User user WHERE user.username =:c AND user.password = :p",models.User.class)
-            .setParameter("c",user.getUsername())
-            .setParameter("p",user.getPassword());
-        return true;
+		List<User> resultsList;
+
+        if (isUserIncomplete(user)) {
+        	resultsList = em.createQuery("FROM User user WHERE user.username =:c AND user.password = :p",User.class)
+	            .setParameter("c",user.getUsername())
+	            .setParameter("p",user.getPassword())
+	            .getResultList();
+	        if (resultsList.size()==1) {
+	        	return true;
+	        }
+            return false;
+        	
+        }
+
+        return false;		
 	}
 	
 	private boolean isUserIncomplete(User user){
@@ -43,15 +54,10 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		return userIsIncomplete;
 		
     }
-	
-	// private boolean isUserIDSet(User user){
-	//     boolean userIDIsSet = false;
+
+    @Override
+    public boolean checkUsername(User user){
+    	return true;
+    }
 		
-	// 	if(user.getID() != null){
-	// 		userIDIsSet = true;
-	// 	}
-		
-	// 	return userIDIsSet;		
- //    }
-	
 }

@@ -16,7 +16,7 @@
         <ul id="tasks"></ul>
         @helper.form(action = routes.UserApplication.logIn(), 'class->"well form-horizontal"){
             @helper.inputText(taskForm("username"),'_label -> "Username")
-            @helper.inputText(taskForm("password"),'_label -> "Password")
+            @helper.inputPassword(taskForm("password"),'_label -> "Password")
             <div class="controls">
                 <input type="submit" class="btn btn-primary"/>
             </div>
@@ -26,7 +26,7 @@
         <ul id="tasks"></ul>
         @helper.form(action = routes.UserApplication.createUser(), 'class->"well form-horizontal"){
             @helper.inputText(taskForm("username"),'_label -> "New Username")
-            @helper.inputText(taskForm("password"),'_label -> "New Password")
+            @helper.inputPassword(taskForm("password"),'_label -> "New Password")
             <div class="controls">
                 <input type="submit" class="btn btn-primary"/>
             </div>

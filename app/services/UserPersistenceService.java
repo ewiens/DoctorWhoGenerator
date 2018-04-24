@@ -9,9 +9,6 @@ public interface UserPersistenceService {
 
 	boolean verifyUser(User u);
 
-	// boolean isUserIncomplete(User u)
+	boolean checkUsername(User u);
 
-	// boolean isUserIdSet(User u)
-
-//	List<Task> fetchAllTasks();
 }
