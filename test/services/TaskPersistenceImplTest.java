@@ -18,7 +18,6 @@ import javax.persistence.PersistenceException;
 import configs.AppConfig;
 import configs.TestDataConfig;
 import models.Task;
-//import services.TaskPersistenceServiceImpl;
 
 import play.db.jpa.JPA;
 
@@ -61,8 +60,11 @@ public void saveInvalidIDTask(){
 	   invalidIDTask.setID(1L);
 	   taskPersitence.saveTask(invalidIDTask);
        fail("This should have failed since id is not blank");
+	   //assertTrue("the databse is empty",taskPersitence.fetchAllTasks().isEmpty());
+	   }
+	catch(Exception e){
+		
 	}
-	catch(Exception e){}
 }
 
 @Test

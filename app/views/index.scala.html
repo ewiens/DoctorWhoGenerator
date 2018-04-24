@@ -1,24 +1,36 @@
-@(message: String, taskForm: Form[Task])
+@(message: String, userForm: Form[User])
 @implicitFieldConstructor = @{helper.FieldConstructor(twitterBootstrapInput.render)}
 
 @main("Welcome to Play") {
 
     <div class="navbar navbar-fixed-top">
-    	<div class="navbar-inner">
-    		<div class="container-fluid">
-    			<a id="titleLink" class="brand" href="/">@message.toUpperCase</a>
-    		</div>
-    	</div>
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a id="titleLink" class="brand" href="/">@message.toUpperCase</a>
+            </div>
+        </div>
     </div>
 
     <div class="container">
-    	<ul id="tasks"></ul>
-    	@helper.form(action = routes.Application.addTask(), 'class->"well form-horizontal"){
-    		@helper.inputText(taskForm("contents"),'_label -> "Contents")
-    		<div class="controls">
-    			<input type="submit" class="btn btn-primary"/>
-    		</div>
-    	}
+        <h1>Log in with an old user</h1>
+        <ul id="tasks"></ul>
+        @helper.form(action = routes.UserApplication.logIn(), 'class->"well form-horizontal"){
+            @helper.inputText(userForm("username"),'_label -> "Username")
+            @helper.inputPassword(userForm("password"),'_label -> "Password")
+            <div class="controls">
+                <input type="submit" class="btn btn-primary"/>
+            </div>
+        }
+
+        <h1>Create a new User</h1>
+        <ul id="tasks"></ul>
+        @helper.form(action = routes.UserApplication.createUser(), 'class->"well form-horizontal"){
+            @helper.inputText(userForm("username"),'_label -> "New Username")
+            @helper.inputPassword(userForm("password"),'_label -> "New Password")
+            <div class="controls">
+                <input type="submit" class="btn btn-primary"/>
+            </div>
+        }
     </div>
 
 }
