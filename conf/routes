@@ -13,6 +13,6 @@ GET     /logIn                       @controllers.UserApplication.logIn()
 #GET     /createUser                  @controllers.UserApplication.index()
 POST    /createUser                  @controllers.UserApplication.createUser()
 
-GET     /createEpisode               @controllers.FormApplication.createEpisode()
-
+GET     /createEpisode               @controllers.FormApplication.enterdata()
+POST    /createEpisode               @controllers.FormApplication.createEpisode()
 

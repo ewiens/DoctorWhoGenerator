@@ -46,7 +46,7 @@ public class UserApplication extends Controller {
         user.setPassword(form.get().getPassword());
         userPersist.saveUser(user);
         logger.debug(user+ " persisted to database");
-		return redirect(routes.UserApplication.index());
+		return redirect(routes.FormApplication.enterdata());
     }
 
     
@@ -62,7 +62,7 @@ public class UserApplication extends Controller {
         user.setPassword(form.get().getPassword());
         if (userPersist.verifyUser(user)){
             logger.debug(user.toString()+ " logged in");
-            return redirect(routes.FormApplication.createEpisode());
+            return redirect(routes.FormApplication.enterdata());
         }else {
             return redirect(routes.UserApplication.index());
         }
