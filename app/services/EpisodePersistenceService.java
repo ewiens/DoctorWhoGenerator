@@ -21,5 +21,4 @@ public interface EpisodePersistenceService {
 	
 	boolean validPlotDescription(String p);
 
-//	List<Task> fetchAllTasks();
 }
