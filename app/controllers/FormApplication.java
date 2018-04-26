@@ -31,9 +31,4 @@ public class FormApplication extends Controller{
         return ok(enterdata.render("Create your episode",play.data.Form.form(Episode.class))); 
     }
 
-    // public Result somethingEpisode(){
-
-    	
-    // }
-
 }

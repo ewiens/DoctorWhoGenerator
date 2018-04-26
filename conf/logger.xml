@@ -13,11 +13,11 @@
 		</encoder>
 	</appender>
 
-	<logger name = "doctor_who" level = "DEBUG" />
+	<logger name = "doctor_who" level = "INFO" />
 
-	<logger name = "controllers" level = "DEBUG" />
+	<logger name = "controllers" level = "INFO" />
 
-	<root level ="DEBUG">
+	<root level ="INFO">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>

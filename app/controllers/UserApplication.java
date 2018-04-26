@@ -24,14 +24,14 @@ import org.slf4j.LoggerFactory;
 public class UserApplication extends Controller {
 
     @Inject
-    private UserPersistenceService taskPersist;
+    private UserPersistenceService userPersist;
     // @Inject
     // private UserValidationService userValidate;
 
     private static final  Logger logger = LoggerFactory.getLogger(UserApplication.class);
 
     public Result index() {
-        return ok(index.render("Welcome",play.data.Form.form(models.User.class))); 
+        return ok(index.render("Welcome",play.data.Form.form(User.class))); 
         // ok is the type of response
         // hidden method (render) lets me get into scala template (index)
     }
@@ -40,16 +40,18 @@ public class UserApplication extends Controller {
         Form<User> form = Form.form(User.class).bindFromRequest();
         if(form.hasErrors()){
             logger.info("Errors");
-            return badRequest(index.render("Welcome", form));
+            return badRequest(index.render("New User Failed", form));
         }
         
         User user = new User();
         user.setUsername(form.get().getUsername());
         user.setPassword(form.get().getPassword());
-        // userValidate.checkUsername(user);
 
-        logger.debug(toString()+ " persisted to database");
-        taskPersist.saveUser(user);
+        if(userPersist.checkUsername(user)){
+            logger.debug(toString()+ " persisted to database");
+            userPersist.saveUser(user);
+            return redirect(routes.UserApplication.index());
+        }
         return redirect(routes.UserApplication.index());
     }
 
@@ -58,16 +60,17 @@ public class UserApplication extends Controller {
         Form<User> form  = Form.form(User.class).bindFromRequest();
         if (form.hasErrors()) {
             logger.info("Form "+ form+" had errors");
-            return badRequest(index.render("Welcome", form));
+            return badRequest(index.render("Login Failed", form));
         }
 
         User user = new User();
         user.setUsername(form.get().getUsername());
         user.setPassword(form.get().getPassword());
-        if (taskPersist.verifyUser(user)){
-            logger.debug(user.toString()+ " logged in");
+        if (userPersist.verifyUser(user)){
+            logger.info(user.toString()+ " logged in");
             return redirect(routes.FormApplication.createEpisode());
         }else {
+            logger.info(user.toString()+" login failed");
             return redirect(routes.UserApplication.index());
         }
     }

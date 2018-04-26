@@ -9,55 +9,62 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+
 @Named       
 public class UserPersistenceServiceImpl implements UserPersistenceService {
 
-	@PersistenceContext
-	private EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
 
-	@Transactional
-	@Override
-	public void saveUser(User user){
-		boolean validUser = false;
-		
-		if(!isUserIncomplete(user)){
-		   em.persist(user);
-		}
-	}
+    @Transactional
+    @Override
+    public void saveUser(User user){
+        boolean validUser = false;
+        
+        if(!isUserIncomplete(user)){
+           em.persist(user);
+        }
+    }
 
-	@Override
-	public boolean verifyUser(User user){
-		List<User> resultsList;
+    @Override
+    public boolean verifyUser(User user){
+        List<User> myResults;
 
-        if (isUserIncomplete(user)) {
-        	resultsList = em.createQuery("FROM User user WHERE user.username =:c AND user.password = :p",User.class)
-	            .setParameter("c",user.getUsername())
-	            .setParameter("p",user.getPassword())
-	            .getResultList();
-	        if (resultsList.size()==1) {
-	        	return true;
-	        }
-            return false;
-        	
+        if (!isUserIncomplete(user)) {
+            myResults = em.createQuery("FROM User user WHERE user.username =:c AND user.password = :p",User.class)
+                .setParameter("c",user.getUsername())
+                .setParameter("p",user.getPassword())
+                .getResultList();
+            if (myResults.size()>0) {
+                return true;
+            }
+            return false;            
         }
 
-        return false;		
-	}
-	
-	private boolean isUserIncomplete(User user){
-	    boolean userIsIncomplete = false;
-		
-		if(user.getUsername() == null || user.getPassword() == null){
-			userIsIncomplete = true;
-		}
+        return false;       
+    }
+    
+    private boolean isUserIncomplete(User user){
+        
+        if(user.getUsername() == null || user.getPassword() == null){
+            return true;
+        }
 
-		return userIsIncomplete;
-		
+        return false;
+        
     }
 
     @Override
     public boolean checkUsername(User user){
-    	return true;
+        List<User> myResults;
+
+        myResults = em.createQuery("FROM User user WHERE user.username =:c",User.class)
+            .setParameter("c",user.getUsername())
+            .getResultList();
+        if (myResults.size()==0) {
+            return true;
+        }
+        return false;
     }
-		
+        
 }
