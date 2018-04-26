@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;	
 import javax.persistence.Id;
 import javax.persistence.Table;
+import play.data.validation.Constraints.Required;
+
 
 @Entity
 @Table(name = "user_table")
@@ -14,11 +16,11 @@ public class User {
 	@GeneratedValue
 	private Long id;
 
-	@play.data.validation.Constraints.Required
+	@Required
 	@Column(name = "username",nullable = false)
 	private String username;
 
-	@play.data.validation.Constraints.Required
+	@Required
 	@Column(name = "password",nullable = false)
 	private String password;
 

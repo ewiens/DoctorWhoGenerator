@@ -25,8 +25,7 @@ public class UserApplication extends Controller {
 
     @Inject
     private UserPersistenceService userPersist;
-    // @Inject
-    // private UserValidationService userValidate;
+
 
     private static final  Logger logger = LoggerFactory.getLogger(UserApplication.class);
 
@@ -40,7 +39,7 @@ public class UserApplication extends Controller {
         Form<User> form = Form.form(User.class).bindFromRequest();
         if(form.hasErrors()){
             logger.info("Errors");
-            return badRequest(index.render("New User Failed", form));
+            return badRequest(index.render("Welcome", form));
         }
         
         User user = new User();
@@ -62,7 +61,7 @@ public class UserApplication extends Controller {
         Form<User> form  = Form.form(User.class).bindFromRequest();
         if (form.hasErrors()) {
             logger.info("Form "+ form+" had errors");
-            return badRequest(index.render("Login Failed", form));
+            return badRequest(index.render("Welcome", form));
         }
 
         User user = new User();
@@ -77,6 +76,4 @@ public class UserApplication extends Controller {
             return badRequest(index.render("Welcome",form));
         }
     }
-
-
 }

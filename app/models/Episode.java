@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;	
 import javax.persistence.Id;
 import javax.persistence.Table;
+import play.data.validation.Constraints.Required;
+
 
 @Entity
 @Table(name = "episode_table")
@@ -14,19 +16,19 @@ public class Episode {
 	@GeneratedValue
 	private Long id;
 
-	@play.data.validation.Constraints.Required
+	@Required
 	@Column(name = "episodeName",nullable = false)
 	private String episodeName;
 	
-	@play.data.validation.Constraints.Required
+	@Required
 	@Column(name = "doctorName",nullable = false)
 	private String doctorName;
 
-	@play.data.validation.Constraints.Required
+	@Required
 	@Column(name = "companionName",nullable = false)
 	private String companionName;
 	
-	@play.data.validation.Constraints.Required
+	@Required
 	@Column(name = "plotDescription",nullable = false)
 	private String plotDescription;
 	
@@ -42,7 +44,7 @@ public class Episode {
 		return episodeName;
 	}
 
-	public void setID(String episodeName){
+	public void setEpisodeName(String episodeName){
 		this.episodeName = episodeName;
 	}
 

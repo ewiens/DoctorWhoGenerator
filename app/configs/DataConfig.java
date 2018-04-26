@@ -17,33 +17,34 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 public class DataConfig {
-
-	@Bean
+ 
+ 	@Bean
 	public EntityManagerFactory entityManagerFactory(){
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		vendorAdapter.setShowSql(false);
-		vendorAdapter.setGenerateDdl(true);
+ 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+ 		vendorAdapter.setShowSql(false);
+ 		vendorAdapter.setGenerateDdl(true);
 		vendorAdapter.setDatabase(Database.MYSQL);
 
-		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-		entityManagerFactory.setPackagesToScan("models");
-		entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
-		entityManagerFactory.setDataSource(dataSource());
-		entityManagerFactory.afterPropertiesSet();
+ 		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+ 		entityManagerFactory.setPackagesToScan("models");
+ 		entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
+ 		entityManagerFactory.setDataSource(dataSource());
+ 		entityManagerFactory.afterPropertiesSet();
 
-		return entityManagerFactory.getObject();
-	}
-
-    @Bean
-    public DataSource dataSource() {
-    	// return the datasource from the play framework.
-    	return DB.getDataSource();
-    }
-
+ 		return entityManagerFactory.getObject();
+ 	}
+ 
+     @Bean
+     public DataSource dataSource() {
+     	// return the datasource from the play framework.
+     	return DB.getDataSource();
+     }
+ 
     @Bean
     public PlatformTransactionManager transactionManager(){
     	return new JpaTransactionManager(entityManagerFactory());
     }
+
 
 
 }
