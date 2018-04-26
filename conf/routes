@@ -3,6 +3,7 @@
 # ~~~~
 
 # Home page
+
 GET     /                           @controllers.UserApplication.index()
 
 
