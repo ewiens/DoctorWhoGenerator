@@ -15,8 +15,8 @@
         <h1>Log in with an old user</h1>
         <ul id="tasks"></ul>
         @helper.form(action = routes.UserApplication.logIn(), 'class->"well form-horizontal"){
-            @helper.inputText(taskForm("username"),'_label -> "Username")
-            @helper.inputPassword(taskForm("password"),'_label -> "Password")
+            @helper.inputText(userForm("username"),'_label -> "Username")
+            @helper.inputPassword(userForm("password"),'_label -> "Password")
             <div class="controls">
                 <input type="submit" class="btn btn-primary"/>
             </div>
@@ -25,8 +25,8 @@
         <h1>Create a new User</h1>
         <ul id="tasks"></ul>
         @helper.form(action = routes.UserApplication.createUser(), 'class->"well form-horizontal"){
-            @helper.inputText(taskForm("username"),'_label -> "New Username")
-            @helper.inputPassword(taskForm("password"),'_label -> "New Password")
+            @helper.inputText(userForm("username"),'_label -> "New Username")
+            @helper.inputPassword(userForm("password"),'_label -> "New Password")
             <div class="controls">
                 <input type="submit" class="btn btn-primary"/>
             </div>
