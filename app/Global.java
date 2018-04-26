@@ -21,4 +21,6 @@ public class Global extends GlobalSettings{
 	public <A> A getControllerInstance(Class<A> clazz) {
 		return ctx.getBean(clazz);
 	}
+	// @Named is used for classes
+	// @Bean is used for methods that we do not control the class
 }

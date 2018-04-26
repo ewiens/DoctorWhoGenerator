@@ -13,7 +13,7 @@
 
     <div class="container">
         <h1>Log in with an old user</h1>
-        <ul id="tasks"></ul>
+        <ul id="login"></ul>
         @helper.form(action = routes.UserApplication.logIn(), 'class->"well form-horizontal"){
             @helper.inputText(userForm("username"),'_label -> "Username")
             @helper.inputPassword(userForm("password"),'_label -> "Password")
@@ -23,7 +23,7 @@
         }
 
         <h1>Create a new User</h1>
-        <ul id="tasks"></ul>
+        <ul id="createUser"></ul>
         @helper.form(action = routes.UserApplication.createUser(), 'class->"well form-horizontal"){
             @helper.inputText(userForm("username"),'_label -> "New Username")
             @helper.inputPassword(userForm("password"),'_label -> "New Password")

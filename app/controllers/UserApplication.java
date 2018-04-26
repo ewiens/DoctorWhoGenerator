@@ -26,10 +26,11 @@ public class UserApplication extends Controller {
     @Inject
     private UserPersistenceService userPersist;
 
+
     private static final  Logger logger = LoggerFactory.getLogger(UserApplication.class);
 
     public Result index() {
-        return ok(index.render("Welcome",play.data.Form.form(models.User.class))); 
+        return ok(index.render("Welcome",play.data.Form.form(User.class))); 
         // ok is the type of response
         // hidden method (render) lets me get into scala template (index)
     }
@@ -44,9 +45,13 @@ public class UserApplication extends Controller {
         User user = new User();
         user.setUsername(form.get().getUsername());
         user.setPassword(form.get().getPassword());
-        userPersist.saveUser(user);
-        logger.debug(user+ " persisted to database");
-		return redirect(routes.FormApplication.enterdata());
+
+        if(userPersist.checkUsername(user)){
+            logger.debug(toString()+ " persisted to database");
+            userPersist.saveUser(user);
+            return redirect(routes.UserApplication.index());
+        }
+        return redirect(routes.UserApplication.index());
     }
 
     
@@ -61,17 +66,11 @@ public class UserApplication extends Controller {
         user.setUsername(form.get().getUsername());
         user.setPassword(form.get().getPassword());
         if (userPersist.verifyUser(user)){
-            logger.debug(user.toString()+ " logged in");
-            return redirect(routes.FormApplication.enterdata());
+            logger.info(user.toString()+ " logged in");
+            return redirect(routes.FormApplication.createEpisode());
         }else {
+            logger.info(user.toString()+" login failed");
             return redirect(routes.UserApplication.index());
         }
     }
-
-    // public Result getUsers(){
-    //     List<User> users = taskPersist.fetchAllUsers();
-    //     logger.info("Get users");
-    //     return ok(play.libs.Json.toJson(users));
-    // }
-
 }

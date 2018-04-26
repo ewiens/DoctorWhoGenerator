@@ -54,7 +54,7 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		if(!episodeName.equals("")){
 			//throw error
 			//check for invalid characters
-			if(!episodeName.contains(";")||!episodeName.contains("#")||!episodeName.contains("$")||!episodeName.contains("--")||!episodeName.contains("$")){
+			if(!episodeName.contains(";")||!episodeName.contains("#")||!episodeName.contains("$")||!episodeName.contains("--")||!episodeName.contains(">")){
 				
 				episodeNameIsValid = true;
 			}
@@ -74,7 +74,7 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		if(!doctorName.equals("")){
 			//throw error
 			//check for invalid characters
-			if(!doctorName.contains(";")||!doctorName.contains("#")||!doctorName.contains("$")||!doctorName.contains("--")||!doctorName.contains("$")){
+			if(!doctorName.contains(";")||!doctorName.contains("#")||!doctorName.contains("$")||!doctorName.contains("--")||!doctorName.contains(">")){
 				
 				doctorNameIsValid = true;
 			}
@@ -94,7 +94,7 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		if(!companionName.equals("")){
 			//throw error
 			//check for invalid characters
-			if(!companionName.contains(";")||!companionName.contains("#")||!companionName.contains("$")||!companionName.contains("--")||!companionName.contains("$")){
+			if(!companionName.contains(";")||!companionName.contains("#")||!companionName.contains("$")||!companionName.contains("--")||!companionName.contains(">")){
 				
 				companionNameIsValid = true;
 			}
@@ -114,7 +114,7 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		if(!plot.equals("")){
 			//throw error
 			//check for invalid characters
-			if(!plot.contains(";")||!plot.contains("#")||!plot.contains("$")||!plot.contains("--")||!plot.contains("$")){
+			if(!plot.contains(";")||!plot.contains("#")||!plot.contains("$")||!plot.contains("--")||!plot.contains(">")){
 				
 				plotIsValid = true;
 			}
@@ -129,7 +129,7 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 	public boolean isEpisodeIncomplete(Episode episode){
 	    boolean episodeIsIncomplete = false;
 		
-		if(episode.getEpisodeName() == null || episode.getDoctorName() == null ||             episode.getCompanionName() == null || episode.getPlotDescription() == null){
+		if(episode.getEpisodeName() == null || episode.getDoctorName() == null || episode.getCompanionName() == null || episode.getPlotDescription() == null){
 			episodeIsIncomplete = true;
 		}
 
@@ -146,5 +146,10 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 	
 		return episodeIDIsSet;		
      }
+	
+    @Override
+	public List<Episode> fetchAllEpisodes(){
+		return em.createQuery("FROM Episode episode ", Episode.class).getResultList();
+	}
 	
 }

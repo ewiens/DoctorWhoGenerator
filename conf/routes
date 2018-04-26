@@ -10,7 +10,7 @@ GET     /                           @controllers.UserApplication.index()
 GET     /assets/*file                controllers.Assets.at(path="/public", file)
 GET     /logIn                       @controllers.UserApplication.logIn()
 
-#GET     /createUser                  @controllers.UserApplication.index()
+GET     /createUser                  @controllers.UserApplication.index()
 POST    /createUser                  @controllers.UserApplication.createUser()
 
 GET     /createEpisode               @controllers.FormApplication.enterdata()
