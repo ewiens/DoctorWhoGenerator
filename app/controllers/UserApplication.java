@@ -61,7 +61,7 @@ public class UserApplication extends Controller {
             userPersist.saveUser(user);
             return redirect(routes.UserApplication.index());
         }
-        form.reject("username", "That username already exists, please enter a different username");
+        form.reject("username", "That username already exists or is invalid, please enter a different username");
         // return redirect(routes.UserApplication.index());
         return badRequest(index.render("Welcome",form));
     }
