@@ -5,8 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;	
 import javax.persistence.Id;
 import javax.persistence.Table;
-import play.data.validation.Constraints.Required;
 
+import play.data.validation.Constraints.Required;
+import play.data.validation.Constraints.MinLength;
 
 @Entity
 @Table(name = "episode_table")
@@ -18,18 +19,22 @@ public class Episode {
 
 	@Required
 	@Column(name = "episodeName",nullable = false)
+	@MinLength(value = 1)
 	private String episodeName;
 	
 	@Required
 	@Column(name = "doctorName",nullable = false)
+	@MinLength(value = 1)
 	private String doctorName;
 
 	@Required
 	@Column(name = "companionName",nullable = false)
+	@MinLength(value = 1)
 	private String companionName;
 	
 	@Required
 	@Column(name = "plotDescription",nullable = false)
+	@MinLength(value = 1)
 	private String plotDescription;
 	
 	public Long getID(){
