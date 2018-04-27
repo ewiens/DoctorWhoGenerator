@@ -41,14 +41,17 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 	 **/
 	public boolean episodeIsValid(Episode episode){
 		boolean episodeIsValid = false;
-			if(validEpisodeName(episode.getEpisodeName())){
-				if(validDoctorName(episode.getDoctorName())){
-					if(validCompanionName(episode.getCompanionName())){
-						if(validPlotDescription(episode.getPlotDescription())){
+			if(validEpisodeName(episode.getEpisodeName()) 
+				&& validDoctorName(episode.getDoctorName()) 
+				&& validCompanionName(episode.getCompanionName()) 
+				&& validPlotDescription(episode.getPlotDescription())){
+				// if(validDoctorName(episode.getDoctorName())){
+				// 	if(validCompanionName(episode.getCompanionName())){
+				// 		if(validPlotDescription(episode.getPlotDescription())){
 							episodeIsValid = true;
-						}
-					}
-				}
+						// }
+				// 	}
+				// }
 			}
 		
 		
@@ -69,7 +72,11 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		if(!episodeName.equals("")){
 			//throw error
 			//check for invalid characters
-			if(!episodeName.contains(";")&&!episodeName.contains("#")&&!episodeName.contains("$")||!episodeName.contains("--")&&!episodeName.contains(">")){
+			if(episodeName.contains(";")
+				||episodeName.contains("#")
+				||episodeName.contains("$")
+				||episodeName.contains("--")
+				||episodeName.contains("$")){
 				
 				episodeNameIsValid = true;
 			}

@@ -5,8 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;	
 import javax.persistence.Id;
 import javax.persistence.Table;
-import play.data.validation.Constraints.Required;
 
+import play.data.validation.Constraints.Required;
+import play.data.validation.Constraints.MinLength;
 
 @Entity
 @Table(name = "user_table")
@@ -18,9 +19,11 @@ public class User {
 
 	@Required
 	@Column(name = "username",nullable = false)
+	@MinLength(value = 1)
 	private String username;
 
 	@Required
+	@MinLength(value = 1)
 	@Column(name = "password",nullable = false)
 	private String password;
 

@@ -107,7 +107,14 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		
 		if(!userName.equals("")||!onlySpaces.equals(".")){
 			//error about blank users
-			if(!userName.contains(";")&&!userName.contains("/")&&!userName.contains("~")&&!userName.contains("`")&&!userName.contains("#")&&!userName.contains("--")&&!userName.contains(">")&&!userName.contains(",")){
+			if(userName.contains(";")
+				||userName.contains("/")
+				||userName.contains("~")
+				||userName.contains("`")
+				||userName.contains("#")
+				||userName.contains("-")
+				||userName.contains(">")
+				||userName.contains(",")){
 			    validUsername = true;
 			}
 			//error about special characters

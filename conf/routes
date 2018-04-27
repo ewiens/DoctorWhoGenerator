@@ -3,12 +3,13 @@
 # ~~~~
 
 # Home page
-GET     /                           @controllers.UserApplication.index()
+GET     /                           @controllers.LogInApplication.index()
 
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                controllers.Assets.at(path="/public", file)
-GET     /logIn                       @controllers.UserApplication.logIn()
+GET     /logIn                       @controllers.LogInApplication.logIn()
+GET     /newUser                     @controllers.LogInApplication.newUser()
 
 #referenced theButton for syntax https://github.com/YogoGit/theButton
 GET     /createUser                  @controllers.UserApplication.index()
