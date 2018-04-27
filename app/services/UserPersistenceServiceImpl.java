@@ -144,17 +144,5 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 	public List<User> fetchAllUsers(){
 		return em.createQuery("FROM User user ", User.class).getResultList();
 	}
-=======
-    public boolean checkUsername(User user){
-        List<User> myResults;
-
-        myResults = em.createQuery("FROM User user WHERE user.username =:c",User.class)
-            .setParameter("c",user.getUsername())
-            .getResultList();
-        if (myResults.size()==0) {
-            return true;
-        }
-        return false;
-    }
         
 }
