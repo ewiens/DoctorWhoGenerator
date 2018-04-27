@@ -1,11 +1,9 @@
 @(message: String, userForm: Form[User])
-
 @implicitFieldConstructor = @{helper.FieldConstructor(twitterBootstrapInput.render)}
 
 @main("Welcome to Play") {
 
     <div class="navbar navbar-fixed-top">
-
         <div class="navbar-inner">
             <div class="container-fluid">
                 <a id="titleLink" class="brand" href="/">@message.toUpperCase</a>
@@ -33,7 +31,6 @@
                 <input type="submit" class="btn btn-primary"/>
             </div>
         }
-
     </div>
 
 }

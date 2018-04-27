@@ -24,6 +24,7 @@ libraryDependencies ++= Seq(
   "org.springframework" % "spring-test"            % "4.1.6.RELEASE" %  "test"
 )
 
+
 libraryDependencies+= "org.webjars" % "jquery" %"1.11.2"
 
 libraryDependencies += "org.webjars" % "bootstrap" % "2.1.1"
