@@ -61,7 +61,9 @@ public class UserApplication extends Controller {
             userPersist.saveUser(user);
             return redirect(routes.UserApplication.index());
         }
-        return redirect(routes.UserApplication.index());
+        form.reject("username", "That username already exists, please enter a different username");
+        // return redirect(routes.UserApplication.index());
+        return badRequest(index.render("Welcome",form));
     }
 
     /**
@@ -84,8 +86,9 @@ public class UserApplication extends Controller {
             logger.info(user.toString()+ " logged in");
             return redirect(routes.FormApplication.createEpisode());
         }else {
+            form.reject("username", "Username and Password do not match");
             logger.info(user.toString()+" login failed");
-            return redirect(routes.UserApplication.index());
+            return badRequest(index.render("Welcome",form));
         }
     }
 }
