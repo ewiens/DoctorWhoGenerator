@@ -12,12 +12,13 @@
     </div>
 
     <div class="container">
-    	<ul id="tasks"></ul>
+        <h1>Create your episode</h1>
+    	<ul id="episodes"></ul>
     	@helper.form(action = routes.FormApplication.createEpisode(), 'class->"well form-horizontal"){
     		@helper.inputText(episodeForm("episodeName"),'_label -> "Episode Name")
             @helper.inputText(episodeForm("doctorName"),'_label -> "Doctor")
             @helper.inputText(episodeForm("companionName"),'_label -> "Companion")
-            @helper.inputText(episodeForm("plotDescription"),'_label -> "Plot")
+            @helper.textarea(episodeForm("plotDescription"),'_label -> "Plot")
             <div class="controls">
     			<input type="submit" class="btn btn-primary"/>
     		</div>

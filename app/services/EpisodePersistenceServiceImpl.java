@@ -9,6 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+/**
+ * provides persistence to the database and validates imput for episodes
+ **/
 @Named       
 public class EpisodePersistenceServiceImpl implements EpisodePersistenceService {
 
@@ -17,9 +20,11 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 
 	@Transactional
 	@Override
+	/**
+	 * validates episode prior to persiting it to the database
+	 * @param Episode episode
+	 **/
 	public void saveEpisode(Episode episode){
-      //boolean validEpisode = false;
-		
 		if(!isEpisodeIncomplete(episode)){
 			if(!isEpisodeIdSet(episode)){
 				if(episodeIsValid(episode)){
@@ -29,6 +34,11 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		}
 	}
 
+	/**
+	 * validates the non-null imputs for the episode
+	 * @param Episode episode
+	 * @return boolean episodeIsValid
+	 **/
 	public boolean episodeIsValid(Episode episode){
 		boolean episodeIsValid = false;
 			if(validEpisodeName(episode.getEpisodeName())){
@@ -45,6 +55,11 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
         return episodeIsValid;
 	}
 
+	/**
+	 * validates the episode name for the episode
+	 * @param String episodeName
+	 * @return boolean episodeNameIsValid
+	 **/	
 	public boolean validEpisodeName(String episodeName){
 		boolean episodeNameIsValid = false;
 		
@@ -54,7 +69,7 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		if(!episodeName.equals("")){
 			//throw error
 			//check for invalid characters
-			if(!episodeName.contains(";")||!episodeName.contains("#")||!episodeName.contains("$")||!episodeName.contains("--")||!episodeName.contains("$")){
+			if(!episodeName.contains(";")&&!episodeName.contains("#")&&!episodeName.contains("$")||!episodeName.contains("--")&&!episodeName.contains(">")){
 				
 				episodeNameIsValid = true;
 			}
@@ -65,6 +80,11 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 			
 	}
 
+	/**
+	 * validates the Doctor's name for the episode
+	 * @param String doctorName
+	 * @return boolean doctorNameIsValid
+	 **/	
 	public boolean validDoctorName(String doctorName){
 		boolean doctorNameIsValid = false;
 		
@@ -74,7 +94,7 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		if(!doctorName.equals("")){
 			//throw error
 			//check for invalid characters
-			if(!doctorName.contains(";")||!doctorName.contains("#")||!doctorName.contains("$")||!doctorName.contains("--")||!doctorName.contains("$")){
+			if(!doctorName.contains(";")&&!doctorName.contains("#")&&!doctorName.contains("$")&&!doctorName.contains("--")&&!doctorName.contains(">")){
 				
 				doctorNameIsValid = true;
 			}
@@ -85,6 +105,11 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 			
 	}
 	
+	/**
+	 * validates the companion's name for the episode
+	 * @param String companionName
+	 * @return boolean companionNameIsValid
+	 **/	
 	public boolean validCompanionName(String companionName){
 		boolean companionNameIsValid = false;
 		
@@ -94,7 +119,7 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		if(!companionName.equals("")){
 			//throw error
 			//check for invalid characters
-			if(!companionName.contains(";")||!companionName.contains("#")||!companionName.contains("$")||!companionName.contains("--")||!companionName.contains("$")){
+			if(!companionName.contains(";")&&!companionName.contains("#")&&!companionName.contains("$")&&!companionName.contains("--")&&!companionName.contains(">")){
 				
 				companionNameIsValid = true;
 			}
@@ -105,6 +130,11 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 			
 	}
 
+	/**
+	 * validates the plot description for the episode
+	 * @param String plot
+	 * @return boolean plotIsValid
+	 **/	
 	public boolean validPlotDescription(String plot){
 		boolean plotIsValid = false;
 		
@@ -114,7 +144,7 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		if(!plot.equals("")){
 			//throw error
 			//check for invalid characters
-			if(!plot.contains(";")||!plot.contains("#")||!plot.contains("$")||!plot.contains("--")||!plot.contains("$")){
+			if(!plot.contains(";")&&!plot.contains("#")&&!plot.contains("$")&&!plot.contains("--")&&!plot.contains(">")){
 				
 				plotIsValid = true;
 			}
@@ -125,11 +155,15 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 			
 	}	
 	
-	
+	/**
+	 * checks to see if any fields are null
+	 * @param Episode episode
+	 * @return boolean episodeIsIncomplete
+	 **/	
 	public boolean isEpisodeIncomplete(Episode episode){
 	    boolean episodeIsIncomplete = false;
 		
-		if(episode.getEpisodeName() == null || episode.getDoctorName() == null ||             episode.getCompanionName() == null || episode.getPlotDescription() == null){
+		if(episode.getEpisodeName() == null || episode.getDoctorName() == null || episode.getCompanionName() == null || episode.getPlotDescription() == null){
 			episodeIsIncomplete = true;
 		}
 
@@ -137,6 +171,11 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		
     }
 	
+	/**
+	 * checks to make sure the ID is not set
+	 * @param Episode episode
+	 * @return boolean episodeIDIsSet
+	 **/	
 	public boolean isEpisodeIdSet(Episode episode){
 	    boolean episodeIDIsSet = false;
 	
@@ -146,5 +185,14 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 	
 		return episodeIDIsSet;		
      }
+	
+    @Override
+	/**
+	 * returns all the episodes in the database
+	 * @return List<Episode>
+	 **/	
+	public List<Episode> fetchAllEpisodes(){
+		return em.createQuery("FROM Episode episode ", Episode.class).getResultList();
+	}
 	
 }
