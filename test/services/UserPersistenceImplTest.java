@@ -141,4 +141,31 @@ public void saveExistingUserTest() {
 	fail("We shouldn't be able to resave the same user");
 }	
 
+@Test
+public void saveCopyUsernameTest() {
+    assertTrue("the databse is empty",userPersitence.fetchAllUsers().isEmpty());
+	
+	User firstValidNewUser = new User();
+	firstValidNewUser.setUsername("unitTestUsername1");
+	firstValidNewUser.setPassword("unitTestPassword1");
+	
+	assertNull("the ID has not been set for firstValidNewUser",firstValidNewUser.getID());
+	userPersitence.saveUser(firstValidNewUser);
+	assertNotNull("the ID has been set for firstValidNewUser",firstValidNewUser.getID());
+    
+	assertTrue("there is a single entry in the database",userPersitence.fetchAllUsers().size() == 1);
+	
+	User copyFirstValidNewUser = new User();
+	copyFirstValidNewUser.setUsername("unitTestUsername1");
+	copyFirstValidNewUser.setPassword("unitTestPassword2");
+	   
+	assertNull("the ID has not been set for secondValidNewUser",copyFirstValidNewUser.getID());
+	if(userPersitence.checkUsername(copyFirstValidNewUser)){
+	    userPersitence.saveUser(copyFirstValidNewUser);
+	}
+	//assertNotNull("the ID has been set for secondValidNewUser",secondValidNewUser.getID());
+    
+	assertTrue("there is only one entry in the database",userPersitence.fetchAllUsers().size() == 1);
+}
+
 }

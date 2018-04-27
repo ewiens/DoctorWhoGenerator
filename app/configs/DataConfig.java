@@ -36,7 +36,6 @@ public class DataConfig {
  
      @Bean
      public DataSource dataSource() {
-     	// return the datasource from the play framework.
      	return DB.getDataSource();
      }
  

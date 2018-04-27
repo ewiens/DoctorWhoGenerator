@@ -19,7 +19,9 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ *controls how the application functions when the user is entering data to create a user or login
+ **/
 @Named
 public class UserApplication extends Controller {
 
@@ -29,14 +31,21 @@ public class UserApplication extends Controller {
 
     private static final  Logger logger = LoggerFactory.getLogger(UserApplication.class);
 
+	/**
+	 * Renders the base html page for creating users or logging in
+	 * @return Result
+	 **/	
     public Result index() {
         return ok(index.render("Welcome",play.data.Form.form(User.class))); 
-        // ok is the type of response
-        // hidden method (render) lets me get into scala template (index)
     }
 
+	/**
+	 * Renders the page after processing data to create a user
+	 * @return Result
+	 **/	
     public Result createUser() {
-        Form<User> form = Form.form(User.class).bindFromRequest();
+        //check if the form has errors
+		Form<User> form = Form.form(User.class).bindFromRequest();
         if(form.hasErrors()){
             logger.info("Errors");
             return badRequest(index.render("Welcome", form));
@@ -45,7 +54,8 @@ public class UserApplication extends Controller {
         User user = new User();
         user.setUsername(form.get().getUsername());
         user.setPassword(form.get().getPassword());
-
+        
+		//check to see if the username is a valid option
         if(userPersist.checkUsername(user)){
             logger.debug(toString()+ " persisted to database");
             userPersist.saveUser(user);
@@ -54,8 +64,12 @@ public class UserApplication extends Controller {
         return redirect(routes.UserApplication.index());
     }
 
-    
+    /**
+	 * Renders the page after processing a login request
+	 * @return Result
+	 **/
     public Result logIn(){
+		//check if the form has errors
         Form<User> form  = Form.form(User.class).bindFromRequest();
         if (form.hasErrors()) {
             logger.info("Form "+ form+" had errors");
@@ -65,6 +79,7 @@ public class UserApplication extends Controller {
         User user = new User();
         user.setUsername(form.get().getUsername());
         user.setPassword(form.get().getPassword());
+		//check for valid user password and username combination
         if (userPersist.verifyUser(user)){
             logger.info(user.toString()+ " logged in");
             return redirect(routes.FormApplication.createEpisode());

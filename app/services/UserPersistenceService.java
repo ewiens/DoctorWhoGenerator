@@ -11,6 +11,12 @@ public interface UserPersistenceService {
 
 	boolean checkUsername(User u);
 	
+	boolean isUsernameTaken(User user);
+	
+	boolean isUsernameValid(User user);
+	
+	boolean isUserIncomplete(User user);
+	
 	List<User> fetchAllUsers();
 
 }

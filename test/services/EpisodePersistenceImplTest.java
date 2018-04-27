@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -52,6 +53,66 @@ public void saveValidNewEpisodeOnEmptyTable(){
 	assertNotNull("the ID has been set for validNewEpisode",validNewEpisode.getID());
     
 	assertTrue("there is a single entry in the database",episodePersitence.fetchAllEpisodes().size() == 1);
+}
+
+@Test
+public void saveInvalidCompanionName(){
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode validNewEpisode = new Episode();
+	validNewEpisode.setEpisodeName("This is a valid new episode name");
+	validNewEpisode.setDoctorName("This is a valid new episode doctor");
+	validNewEpisode.setCompanionName("");
+	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	
+	assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	episodePersitence.saveEpisode(validNewEpisode);
+    fail("This should have failed since companion is invalid");
+}		
+
+@Test
+public void saveInvalidEpisodeName(){
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode validNewEpisode = new Episode();
+	validNewEpisode.setEpisodeName("");
+	validNewEpisode.setDoctorName("This is a valid new episode doctor");
+	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	
+	assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	episodePersitence.saveEpisode(validNewEpisode);
+    fail("This should have failed since episode name is invalid");
+}		
+
+@Test
+public void saveInvalidDoctorName(){
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode validNewEpisode = new Episode();
+	validNewEpisode.setEpisodeName("This is a valid new episode name");
+	validNewEpisode.setDoctorName("");
+	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	
+	assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	episodePersitence.saveEpisode(validNewEpisode);
+    fail("This should have failed since doctor name is invalid");
+}		
+
+@Test
+public void saveInvalidPlotDescription(){
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode validNewEpisode = new Episode();
+	validNewEpisode.setEpisodeName("This is a valid new episode name");
+	validNewEpisode.setDoctorName("This is a valid new episode doctor");
+	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setPlotDescription("");
+	
+	assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	episodePersitence.saveEpisode(validNewEpisode);
+    fail("This should have failed since plot description is invalid");
 }		
 
 @Test
@@ -116,7 +177,37 @@ public void saveExistingEpisodeTest() {
 	assertTrue("List should have one element", episodePersitence.fetchAllEpisodes().size() == 1);
 	
 	episodePersitence.saveEpisode(e);
+	//assertTrue("there is still one entry in the database",episodePersitence.fetchAllEpisodes().size() == 1);
 	fail("We shouldn't be able to resave the same item");
 }	
+
+@Test
+public void saveInValidNewEpisodeOnTableWithOneItem(){
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode firstValidNewEpisode = new Episode();
+	firstValidNewEpisode.setEpisodeName("This is a valid new episode name");
+	firstValidNewEpisode.setDoctorName("This is a valid new episode doctor");
+	firstValidNewEpisode.setCompanionName("This is a valid new episode companion");
+	firstValidNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	
+	assertNull("the ID has not been set for firstValidNewEpisode",firstValidNewEpisode.getID());
+	episodePersitence.saveEpisode(firstValidNewEpisode);
+	assertNotNull("the ID has been set for firstValidNewEpisode",firstValidNewEpisode.getID());
+    
+	assertTrue("there is a single entry in the database",episodePersitence.fetchAllEpisodes().size() == 1);
+	
+	Episode secondInValidNewEpisode = new Episode();
+	secondInValidNewEpisode.setEpisodeName(null);
+	secondInValidNewEpisode.setDoctorName("This is a valid new episode doctor");
+	secondInValidNewEpisode.setCompanionName("This is a valid new episode companion");
+	secondInValidNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	
+	assertNull("the ID has not been set for secondValidNewEpisode",secondInValidNewEpisode.getID());
+	episodePersitence.saveEpisode(secondInValidNewEpisode);
+	//assertNotNull("the ID has been set for secondValidNewEpisode",secondValidNewEpisode.getID());
+    
+	assertTrue("there is still one entry in the database",episodePersitence.fetchAllEpisodes().size() == 1);
+}
 
 }
