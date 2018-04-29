@@ -23,27 +23,43 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
     @Transactional
     @Override
 	/**
-	 * enures user is not null before peristing it to the database
-	 * @param User user
-	 **/
+     *see interface UserPersistenceService
+     **/	 
     public void saveUser(User user){
         //boolean validUser = false;
         
-        if(!isUserIncomplete(user)){
-           em.persist(user);
-        }else{
-			throw new NullPointerException("A user must have both a name and password");
+		if(!isUserNull(user)){
+			if(!isUserIncomplete(user)){
+				if(!isUserIdSet(user)){
+				   if(isUsernameValid(user)&&isPasswordValid(user)){
+					   em.persist(user);
+				   }
+				   else{
+					   throw new IllegalArgumentException("Invalid username or password; avoid entering special characters into the username and only entering spaces in either");
+				   }
+				}
+				else{
+					throw new IllegalArgumentException("Cannot persist user; illegal ID");
+				}
+			}
+			else{
+				throw new NullPointerException("A user must have both a name and password");
+			}
+        }
+		else{
+			throw new NullPointerException("A null object cannot be persisted to the database.");
 		}
-    }
-
+	}
+	
+		
     @Override
 	/**
-	 * checks it the user is null before seeing if the user exists in the database. If the user is present, it will return true
-	 * @param User user
-	 * @return boolean 
-	 **/
+     *see interface UserPersistenceService
+     **/	 
     public boolean verifyUser(User user){
         List<User> myResults;
+		
+		boolean userExists = false;
 
         if (!isUserIncomplete(user)) {
             myResults = em.createQuery("FROM User user WHERE user.username =:c AND user.password = :p",User.class)
@@ -52,35 +68,18 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
                 .getResultList();
             //if the user exists, return true
 			if (myResults.size()>0) {
-                return true;
+                userExists = true; //return true
             }
-            return false;            
+            //return false;            
         }
 
-        return false;       
-    }
-    
-	/**
-	 * checks if the user information has null values. Will return true if a null value is detected
-	 * @param User user
-	 * @return boolean 
-	 **/
-    public boolean isUserIncomplete(User user){
-        boolean userIsIncomplete = false;
-        if(user.getUsername().equals(null) || user.getPassword().equals(null)){
-            userIsIncomplete = true;
-        }
-
-        return userIsIncomplete;
-        
+        return userExists;//false       
     }
 
     @Override
-	/**
-	 * checks if the username is valid or taken so it can be used by a new user
-	 * @param User user
-	 * @return boolean validUsername
-	 **/
+    /**
+     *see interface UserPersistenceService
+     **/	 
     public boolean checkUsername(User user){
         boolean validUsername = false;
 		
@@ -92,13 +91,66 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		
 		return validUsername;
     }
+		
+	@Override
+    /**
+     *see interface UserPersistenceService
+     **/	 
+	public List<User> fetchAllUsers(){
+		return em.createQuery("FROM User user ", User.class).getResultList();
+	}	
+	
+	/**
+	 * checks to see if the object that is passed is a null object
+	 * @param User user
+	 * @return boolean isUserNull
+	 **/
+	 private boolean isUserNull(User user){
+	     boolean isUserNull = true;
+		 
+		 if(user != null){
+			 isUserNull = false;
+		 }
+		 
+		 return isUserNull;
+	 }
+
+	/**
+	 * checks to make sure the ID is not set
+	 * @param User user
+	 * @return boolean userIDIsSet
+	 **/	
+	private boolean isUserIdSet(User user){
+	    boolean userIDIsSet = false;
+	
+		if(user.getID() != null){
+			userIDIsSet = true;
+		}
+	
+		return userIDIsSet;		
+     }
+	    
+	/**
+	 * checks if the user information has null values. Will return true if a null value is detected
+	 * @param User user
+	 * @return boolean 
+	 **/
+    private boolean isUserIncomplete(User user){
+        boolean userIsIncomplete = false;
+        if(user.getUsername().equals(null) || user.getPassword().equals(null)){
+            userIsIncomplete = true;
+        }
+
+        return userIsIncomplete;
+        
+    }
 	
 	/**
 	 * checks if the username is blank or contains special characters
 	 * @param User user
 	 * @return boolean validUsername
 	 **/
-	public boolean isUsernameValid(User user){
+	private boolean isUsernameValid(User user){
 		
 		boolean validUsername = false;
 		
@@ -127,11 +179,29 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 	}
 
 	/**
+	 * checks if the password is blank
+	 * @param User user
+	 * @return boolean passwordIsValid
+	 **/	
+    private boolean isPasswordValid(User user){
+	    boolean passwordIsValid = false;
+		
+		String passWord = user.getPassword();
+		passWord = passWord.trim();
+		
+		if(!passWord.equals("")){
+			passwordIsValid = true;
+		}
+	    
+		return passwordIsValid;
+	}
+	
+	/**
 	 * checks if the username already exists in the database
 	 * @param User user
 	 * @return boolean 
 	 **/	
-	public boolean isUsernameTaken(User user){
+	private boolean isUsernameTaken(User user){
 	    List<User> myResults;
         
 		boolean usernameIsTaken = true;
@@ -146,14 +216,4 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		return usernameIsTaken;
 	}
 	
-	
-	@Override
-	/**
-	 * returns all the users in the database
-	 * @return List<User>
-	 **/	
-	public List<User> fetchAllUsers(){
-		return em.createQuery("FROM User user ", User.class).getResultList();
-	}
-        
 }

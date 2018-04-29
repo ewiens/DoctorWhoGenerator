@@ -42,6 +42,19 @@ public void saveEmptyEpisode(){
 }	
 
 @Test
+public void saveNull(){
+    try{  
+	    //final Episode emptyEpisode = new Episode();
+	    episodePersitence.saveEpisode(null);
+        fail("A null object should not be persisted to the database");
+    }
+    catch(NullPointerException npe){
+		//System.out.println("Cannot save the episode; all fields are null");
+		//error message
+	}
+}
+
+@Test
 public void saveValidNewEpisodeOnEmptyTable(){
     assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	
@@ -88,6 +101,86 @@ public void saveInvalidEpisodeName(){
 	validNewEpisode.setDoctorName("This is a valid new episode doctor");
 	validNewEpisode.setCompanionName("This is a valid new episode companion");
 	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	try{	
+	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	    episodePersitence.saveEpisode(validNewEpisode);
+        fail("This should have failed since episode name is invalid");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid episode name");
+		//error message
+	}
+}
+
+@Test
+public void saveNullEpisodeName(){
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode validNewEpisode = new Episode();
+	validNewEpisode.setEpisodeName(null);
+	validNewEpisode.setDoctorName("This is a valid new episode doctor");
+	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	try{	
+	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	    episodePersitence.saveEpisode(validNewEpisode);
+        fail("This should have failed since episode name is invalid");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid episode name");
+		//error message
+	}
+}		
+
+@Test
+public void saveNullDoctorName(){
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode validNewEpisode = new Episode();
+	validNewEpisode.setEpisodeName("This is a valid new episode name");
+	validNewEpisode.setDoctorName(null);
+	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	try{	
+	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	    episodePersitence.saveEpisode(validNewEpisode);
+        fail("This should have failed since episode name is invalid");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid episode name");
+		//error message
+	}
+}		
+
+@Test
+public void saveNullCompanionName(){
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode validNewEpisode = new Episode();
+	validNewEpisode.setEpisodeName("This is a valid new episode name");
+	validNewEpisode.setDoctorName("This is a valid new episode doctor");
+	validNewEpisode.setCompanionName(null);
+	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	try{	
+	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	    episodePersitence.saveEpisode(validNewEpisode);
+        fail("This should have failed since episode name is invalid");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid episode name");
+		//error message
+	}
+}		
+
+@Test
+public void saveNullPlotDescription(){
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode validNewEpisode = new Episode();
+	validNewEpisode.setEpisodeName("This is a valid new episode name");
+	validNewEpisode.setDoctorName("This is a valid new episode doctor");
+	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setPlotDescription(null);
 	try{	
 	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
 	    episodePersitence.saveEpisode(validNewEpisode);

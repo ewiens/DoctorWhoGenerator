@@ -8,9 +8,13 @@ import javax.persistence.Table;
 
 import play.data.validation.Constraints.Required;
 import play.data.validation.Constraints.MinLength;
+import play.data.validation.Constraints.MaxLength;
 
 @Entity
 @Table(name = "user_table")
+/**
+ * an object that stores username and password for a user
+ **/
 public class User {
 
 	@Id
@@ -19,35 +23,60 @@ public class User {
 
 	@Required
 	@Column(name = "username",nullable = false)
-	@MinLength(value = 1)
+	@MinLength(value = 4)
+	@MaxLength(value = 256)
 	private String username;
 
 	@Required
-	@MinLength(value = 1)
+	@MinLength(value = 4)
+    @MaxLength(value = 256)	
 	@Column(name = "password",nullable = false)
 	private String password;
 
-	
+	/**
+	 * returns user id
+	 * @return Long id
+	 **/
 	public Long getID(){
 		return id;
 	}
 
+	/**
+	 * sets user id
+	 * @param Long id
+	 **/		
 	public void setID(Long id){
 		this.id = id;
 	}
 
+	/**
+	 * returns user's username
+	 * @return String username
+	 **/	
 	public String getUsername(){
 		return username;
 	}
 
+	/**
+	 * sets user's username
+	 * @param String username
+	 **/		
 	public void setUsername(String username){
 		this.username = username;
 	}
-	
+
+	/**
+	 * returns user password
+	 * @return String password
+	 **/	
 	public String getPassword(){
 		return password;
 	}
 
+	/**
+	 * sets user password
+	 * @param String password
+	 **/	
 	public void setPassword(String password){
 		this.password = password;
 	}

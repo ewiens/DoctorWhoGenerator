@@ -25,156 +25,167 @@ import play.db.jpa.JPA;
 public class UserPersistenceImplTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 @Inject 
-private UserPersistenceService userPersitence;	
+private UserPersistenceService userPersistence;	
+
+@Test
+public void saveNullUser(){
+    try{
+        userPersistence.saveUser(null);
+		fail("We should not be able to persist a null object to the database");
+	}
+    catch(NullPointerException npe){
+		
+    }	
+}
 
 @Test
 public void saveEmptyUser(){
     try{  
 	    final User emptyUser = new User();
-	    userPersitence.saveUser(emptyUser);
+	    userPersistence.saveUser(emptyUser);
         fail("A user with no values cannot be persisted");
     }
     catch(NullPointerException iae){
-		System.out.println("A user needs a username and a password to be persisted");
+		//System.out.println("A user needs a username and a password to be persisted");
 	}
 }	
 
 @Test
 public void saveValidNewUserOnEmptyTable(){
-    assertTrue("the databse is empty",userPersitence.fetchAllUsers().isEmpty());
+    assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
 	
 	User validNewUser = new User();
 	validNewUser.setUsername("unitTestUser");
 	validNewUser.setPassword("unitTestPassword");
 	
 	assertNull("the ID has not been set for validNewUser",validNewUser.getID());
-	userPersitence.saveUser(validNewUser);
+	userPersistence.saveUser(validNewUser);
 	assertNotNull("the ID has been set for validNewUser",validNewUser.getID());
     
-	assertTrue("there is a single entry in the database",userPersitence.fetchAllUsers().size() == 1);
+	assertTrue("there is a single entry in the database",userPersistence.fetchAllUsers().size() == 1);
 }		
 
 @Test
 public void saveInvalidIDUser(){
-    assertTrue("the databse is empty",userPersitence.fetchAllUsers().isEmpty());
+    assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
 	try{
 	   User invalidIDUser = new User();
 	   invalidIDUser.setUsername("unitTestUser");
 	   invalidIDUser.setPassword("unitTestPassword");
 	   invalidIDUser.setID(1L);
-	   userPersitence.saveUser(invalidIDUser);
+	   userPersistence.saveUser(invalidIDUser);
        fail("This should have failed since id is not blank");
-	   //assertTrue("the databse is empty",userPersitence.fetchAllUsers().isEmpty());
+	   //assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
 	   }
-	catch(Exception e){
+	catch(IllegalArgumentException iae){
 		
 	}
 }
 
 @Test
 public void saveInvalidUsernameUser(){
-    assertTrue("the databse is empty",userPersitence.fetchAllUsers().isEmpty());
+    assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
 	try{
 	   User invalidUsernameUser = new User();
 	   invalidUsernameUser.setUsername("");
 	   invalidUsernameUser.setPassword("unitTestPassword");
-	   userPersitence.saveUser(invalidUsernameUser);
+	   userPersistence.saveUser(invalidUsernameUser);
        fail("This should have failed since the username is an empty string");
-	   //assertTrue("the databse is empty",userPersitence.fetchAllUsers().isEmpty());
+	   //assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
 	   }
-	catch(Exception e){
+	catch(IllegalArgumentException iae){
 		
 	}
 }
 
 @Test
 public void saveInvalidPasswordUser(){
-    assertTrue("the databse is empty",userPersitence.fetchAllUsers().isEmpty());
+    assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
 	try{
 	   User invalidPasswordUser = new User();
 	   invalidPasswordUser.setUsername("unitTestUsername");
 	   invalidPasswordUser.setPassword("");
-	   userPersitence.saveUser(invalidPasswordUser);
+	   userPersistence.saveUser(invalidPasswordUser);
        fail("This should have failed since the password is an empty string");
-	   //assertTrue("the databse is empty",userPersitence.fetchAllUsers().isEmpty());
+	   //assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
 	   }
-	catch(Exception e){
+	catch(IllegalArgumentException iae){
 		
 	}
 }
 
 @Test
 public void saveValidNewUserOnTableWithOneItem(){
-    assertTrue("the databse is empty",userPersitence.fetchAllUsers().isEmpty());
+    assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
 	
 	User firstValidNewUser = new User();
 	firstValidNewUser.setUsername("unitTestUsername1");
 	firstValidNewUser.setPassword("unitTestPassword1");
 	
 	assertNull("the ID has not been set for firstValidNewUser",firstValidNewUser.getID());
-	userPersitence.saveUser(firstValidNewUser);
+	userPersistence.saveUser(firstValidNewUser);
 	assertNotNull("the ID has been set for firstValidNewUser",firstValidNewUser.getID());
     
-	assertTrue("there is a single entry in the database",userPersitence.fetchAllUsers().size() == 1);
+	assertTrue("there is a single entry in the database",userPersistence.fetchAllUsers().size() == 1);
 	
 	User secondValidNewUser = new User();
 	secondValidNewUser.setUsername("unitTestUsername2");
 	secondValidNewUser.setPassword("unitTestPassword2");
 	   
 	assertNull("the ID has not been set for secondValidNewUser",secondValidNewUser.getID());
-	userPersitence.saveUser(secondValidNewUser);
+	userPersistence.saveUser(secondValidNewUser);
 	assertNotNull("the ID has been set for secondValidNewUser",secondValidNewUser.getID());
     
-	assertTrue("there are two entries in the database",userPersitence.fetchAllUsers().size() == 2);
+	assertTrue("there are two entries in the database",userPersistence.fetchAllUsers().size() == 2);
 }
 
 @Test
-public void saveExistingUserTest() {
+public void resaveExistingUserTest() {
 	final User u = new User();
 	u.setUsername("unitTestUsername1");
 	u.setPassword("unitTestPassword1");
-	userPersitence.saveUser(u);
+	userPersistence.saveUser(u);
 	assertNotNull("The ID should be set", u.getID());
-	//final List<User> list = userPersitence.fetchAllUsers();
+	//final List<User> list = userPersistence.fetchAllUsers();
 	//assertTrue("List should have one element", list.size() == 1);
-	assertTrue("List should have one element", userPersitence.fetchAllUsers().size() == 1);
+	assertTrue("List should have one element", userPersistence.fetchAllUsers().size() == 1);
 	try{
-	    if(userPersitence.checkUsername(u)){
-	        userPersitence.saveUser(u);
+	    if(userPersistence.checkUsername(u)){
+	        userPersistence.saveUser(u);
         	fail("We shouldn't be able to resave the same user");
 	    }
 	}
 	catch(IllegalArgumentException iae){
-		System.out.println("This user already exists; please try again");
+//		System.out.println("This user already exists; please try again");
 	}
 
 }	
 
 @Test
 public void saveCopyUsernameTest() {
-    assertTrue("the databse is empty",userPersitence.fetchAllUsers().isEmpty());
+    assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
 	
 	User firstValidNewUser = new User();
 	firstValidNewUser.setUsername("unitTestUsername1");
 	firstValidNewUser.setPassword("unitTestPassword1");
 	
 	assertNull("the ID has not been set for firstValidNewUser",firstValidNewUser.getID());
-	userPersitence.saveUser(firstValidNewUser);
+	userPersistence.saveUser(firstValidNewUser);
 	assertNotNull("the ID has been set for firstValidNewUser",firstValidNewUser.getID());
     
-	assertTrue("there is a single entry in the database",userPersitence.fetchAllUsers().size() == 1);
+	assertTrue("there is a single entry in the database",userPersistence.fetchAllUsers().size() == 1);
 	
 	User copyFirstValidNewUser = new User();
 	copyFirstValidNewUser.setUsername("unitTestUsername1");
 	copyFirstValidNewUser.setPassword("unitTestPassword2");
 	   
 	assertNull("the ID has not been set for secondValidNewUser",copyFirstValidNewUser.getID());
-	if(userPersitence.checkUsername(copyFirstValidNewUser)){
-	    userPersitence.saveUser(copyFirstValidNewUser);
+	if(userPersistence.checkUsername(copyFirstValidNewUser)){
+	    userPersistence.saveUser(copyFirstValidNewUser);
 	}
 	//assertNotNull("the ID has been set for secondValidNewUser",secondValidNewUser.getID());
     
-	assertTrue("there is only one entry in the database",userPersitence.fetchAllUsers().size() == 1);
+	assertTrue("there is only one entry in the database",userPersistence.fetchAllUsers().size() == 1);
 }
 
 }

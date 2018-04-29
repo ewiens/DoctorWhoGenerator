@@ -49,6 +49,8 @@ public class FormApplication extends Controller{
 		    return badRequest(enterdata.render("Welcome", form));
 	    }
 	
+	    String errMessage = "This episode contains invalid imputs; please try again";
+	
 	    //if the form is error free, create and persist the episode
 	    Episode episode = new Episode();
 	    episode.setEpisodeName(form.get().getEpisodeName());
@@ -56,9 +58,26 @@ public class FormApplication extends Controller{
 	    episode.setCompanionName(form.get().getCompanionName());
 	    episode.setPlotDescription(form.get().getPlotDescription());
 		//if the user imputs are valid, this will run; else it will error
+		try{
 	    episodePersist.saveEpisode(episode);
 	    logger.debug(episode+ " persisted to database");
 	    return redirect(routes.FormApplication.createEpisode());
+		}
+		catch(IllegalArgumentException iae){
+		    errMessage = iae.getMessage();
+			form.reject(iae.getMessage());
+			logger.debug(toString()+ " recieved error"+iae.getMessage());
+		    //return badRequest(createuser.render("Welcome",form));
+		}			
+		catch(NullPointerException npe){
+		    errMessage = npe.getMessage();
+			form.reject(npe.getMessage());
+			logger.debug(toString()+ " recieved error"+npe.getMessage());
+			
+		}
+		form.reject("episodeName",errMessage);
+        return badRequest(enterdata.render("Welcome",form));
+		
     }
 	
 }
