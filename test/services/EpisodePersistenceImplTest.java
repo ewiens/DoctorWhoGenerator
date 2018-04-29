@@ -35,7 +35,10 @@ public void saveEmptyEpisode(){
 	    episodePersitence.saveEpisode(emptyEpisode);
         fail("A episode with no values cannot be persisted");
     }
-    catch(Exception e){}
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; all fields are null");
+		//error message
+	}
 }	
 
 @Test
@@ -43,9 +46,9 @@ public void saveValidNewEpisodeOnEmptyTable(){
     assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	
 	Episode validNewEpisode = new Episode();
-	validNewEpisode.setEpisodeName("This is a valid new episode name");
-	validNewEpisode.setDoctorName("This is a valid new episode doctor");
-	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setEpisodeName("ValidName");
+	validNewEpisode.setDoctorName("ValidDocName");
+	validNewEpisode.setCompanionName("ValidCompName");
 	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	
 	assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
@@ -65,9 +68,15 @@ public void saveInvalidCompanionName(){
 	validNewEpisode.setCompanionName("");
 	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	
-	assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
-	episodePersitence.saveEpisode(validNewEpisode);
-    fail("This should have failed since companion is invalid");
+	try{
+	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	    episodePersitence.saveEpisode(validNewEpisode);
+        fail("This should have failed since companion is invalid");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid companion name");
+    	//error message
+	}
 }		
 
 @Test
@@ -79,10 +88,15 @@ public void saveInvalidEpisodeName(){
 	validNewEpisode.setDoctorName("This is a valid new episode doctor");
 	validNewEpisode.setCompanionName("This is a valid new episode companion");
 	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
-	
-	assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
-	episodePersitence.saveEpisode(validNewEpisode);
-    fail("This should have failed since episode name is invalid");
+	try{	
+	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	    episodePersitence.saveEpisode(validNewEpisode);
+        fail("This should have failed since episode name is invalid");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid episode name");
+		//error message
+	}
 }		
 
 @Test
@@ -95,9 +109,15 @@ public void saveInvalidDoctorName(){
 	validNewEpisode.setCompanionName("This is a valid new episode companion");
 	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	
-	assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
-	episodePersitence.saveEpisode(validNewEpisode);
-    fail("This should have failed since doctor name is invalid");
+	try{
+	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	    episodePersitence.saveEpisode(validNewEpisode);
+        fail("This should have failed since doctor name is invalid");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid doctor name");
+		//error message
+	}
 }		
 
 @Test
@@ -110,10 +130,17 @@ public void saveInvalidPlotDescription(){
 	validNewEpisode.setCompanionName("This is a valid new episode companion");
 	validNewEpisode.setPlotDescription("");
 	
-	assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
-	episodePersitence.saveEpisode(validNewEpisode);
-    fail("This should have failed since plot description is invalid");
+	try{
+	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
+	    episodePersitence.saveEpisode(validNewEpisode);
+        fail("This should have failed since plot description is invalid");
+    } 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid plot description");
+		//error message
+	}
 }		
+
 
 @Test
 public void saveInvalidIDEpisode(){
@@ -129,8 +156,9 @@ public void saveInvalidIDEpisode(){
        fail("This should have failed since id is not blank");
 	   //assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	   }
-	catch(Exception e){
-		
+	catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; illegal ID");
+	    //error message	
 	}
 }
 
@@ -176,9 +204,15 @@ public void saveExistingEpisodeTest() {
 	//assertTrue("List should have one element", list.size() == 1);
 	assertTrue("List should have one element", episodePersitence.fetchAllEpisodes().size() == 1);
 	
-	episodePersitence.saveEpisode(e);
-	//assertTrue("there is still one entry in the database",episodePersitence.fetchAllEpisodes().size() == 1);
-	fail("We shouldn't be able to resave the same item");
+	try{
+	    episodePersitence.saveEpisode(e);
+	    //assertTrue("there is still one entry in the database",episodePersitence.fetchAllEpisodes().size() == 1);
+	    fail("We shouldn't be able to resave the same item");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot resave the same episode");
+		//error message
+	}
 }	
 
 @Test
@@ -198,14 +232,18 @@ public void saveInValidNewEpisodeOnTableWithOneItem(){
 	assertTrue("there is a single entry in the database",episodePersitence.fetchAllEpisodes().size() == 1);
 	
 	Episode secondInValidNewEpisode = new Episode();
-	secondInValidNewEpisode.setEpisodeName(null);
+	secondInValidNewEpisode.setEpisodeName("");
 	secondInValidNewEpisode.setDoctorName("This is a valid new episode doctor");
 	secondInValidNewEpisode.setCompanionName("This is a valid new episode companion");
 	secondInValidNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	
 	assertNull("the ID has not been set for secondValidNewEpisode",secondInValidNewEpisode.getID());
+	try{
 	episodePersitence.saveEpisode(secondInValidNewEpisode);
-	//assertNotNull("the ID has been set for secondValidNewEpisode",secondValidNewEpisode.getID());
+	}
+	catch(IllegalArgumentException iae){
+		//System.out.println(iae.getMessage());
+	}//assertNotNull("the ID has been set for secondValidNewEpisode",secondValidNewEpisode.getID());
     
 	assertTrue("there is still one entry in the database",episodePersitence.fetchAllEpisodes().size() == 1);
 }

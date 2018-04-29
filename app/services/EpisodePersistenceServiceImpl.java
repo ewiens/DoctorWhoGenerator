@@ -30,10 +30,34 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 				if(episodeIsValid(episode)){
 					em.persist(episode);
 				}
+				else{
+			        throw new IllegalArgumentException("One or more fields contain illegal arguments. Avoid special characters and only entering spaces");
+		        }
 			}
+			else{
+			    throw new IllegalArgumentException("Cannot save episode; illegal ID");
+		    }
+		}
+		else{
+			throw new IllegalArgumentException("An episode requires an episode name, doctor name, companion name, and plot description");
 		}
 	}
 
+//	private boolean doesEpisodeAlreadyExist(Episode episode){
+//	    List<Episode> episodeResults;
+//       
+//		boolean episodeAlreadyExists = true;
+//		
+//		myResults = em.createQuery("FROM Episode episode WHERE episode.username =:c",Episode.class)
+//            .setParameter("c",episode.getUsername())
+//            .getResultList();
+//        if (myResults.size()==0) {
+//            episodeAlreadyExists = false;
+//        }
+//		
+//		return episodeAlreadyExists;
+//	}
+	
 	/**
 	 * validates the non-null imputs for the episode
 	 * @param Episode episode
@@ -72,11 +96,11 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		if(!episodeName.equals("")){
 			//throw error
 			//check for invalid characters
-			if(episodeName.contains(";")
-				||episodeName.contains("#")
-				||episodeName.contains("$")
-				||episodeName.contains("--")
-				||episodeName.contains("$")){
+			if(!episodeName.contains(";")
+				&&!episodeName.contains("#")
+				&&!episodeName.contains("$")
+				&&!episodeName.contains("--")
+				&&!episodeName.contains("$")){
 				
 				episodeNameIsValid = true;
 			}

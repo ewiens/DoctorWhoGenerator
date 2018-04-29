@@ -27,11 +27,13 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 	 * @param User user
 	 **/
     public void saveUser(User user){
-        boolean validUser = false;
+        //boolean validUser = false;
         
         if(!isUserIncomplete(user)){
            em.persist(user);
-        }
+        }else{
+			throw new NullPointerException("A user must have both a name and password");
+		}
     }
 
     @Override
@@ -64,12 +66,12 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 	 * @return boolean 
 	 **/
     public boolean isUserIncomplete(User user){
-        
-        if(user.getUsername() == null || user.getPassword() == null){
-            return true;
+        boolean userIsIncomplete = false;
+        if(user.getUsername().equals(null) || user.getPassword().equals(null)){
+            userIsIncomplete = true;
         }
 
-        return false;
+        return userIsIncomplete;
         
     }
 
@@ -107,14 +109,14 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		
 		if(!userName.equals("")||!onlySpaces.equals(".")){
 			//error about blank users
-			if(userName.contains(";")
-				||userName.contains("/")
-				||userName.contains("~")
-				||userName.contains("`")
-				||userName.contains("#")
-				||userName.contains("-")
-				||userName.contains(">")
-				||userName.contains(",")){
+			if(!userName.contains(";")
+				&&!userName.contains("/")
+				&&!userName.contains("~")
+				&&!userName.contains("`")
+				&&!userName.contains("#")
+				&&!userName.contains("-")
+				&&!userName.contains(">")
+				&&!userName.contains(",")){
 			    validUsername = true;
 			}
 			//error about special characters
@@ -131,15 +133,17 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 	 **/	
 	public boolean isUsernameTaken(User user){
 	    List<User> myResults;
-
+        
+		boolean usernameIsTaken = true;
+		
 		myResults = em.createQuery("FROM User user WHERE user.username =:c",User.class)
             .setParameter("c",user.getUsername())
             .getResultList();
         if (myResults.size()==0) {
-            return false;
+            usernameIsTaken = false;
         }
 		
-		return true;
+		return usernameIsTaken;
 	}
 	
 	

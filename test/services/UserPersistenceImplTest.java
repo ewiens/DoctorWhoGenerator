@@ -34,7 +34,9 @@ public void saveEmptyUser(){
 	    userPersitence.saveUser(emptyUser);
         fail("A user with no values cannot be persisted");
     }
-    catch(Exception e){}
+    catch(NullPointerException iae){
+		System.out.println("A user needs a username and a password to be persisted");
+	}
 }	
 
 @Test
@@ -136,9 +138,16 @@ public void saveExistingUserTest() {
 	//final List<User> list = userPersitence.fetchAllUsers();
 	//assertTrue("List should have one element", list.size() == 1);
 	assertTrue("List should have one element", userPersitence.fetchAllUsers().size() == 1);
-	
-	userPersitence.saveUser(u);
-	fail("We shouldn't be able to resave the same user");
+	try{
+	    if(userPersitence.checkUsername(u)){
+	        userPersitence.saveUser(u);
+        	fail("We shouldn't be able to resave the same user");
+	    }
+	}
+	catch(IllegalArgumentException iae){
+		System.out.println("This user already exists; please try again");
+	}
+
 }	
 
 @Test
