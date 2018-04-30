@@ -62,6 +62,9 @@ public class UserApplication extends Controller {
 		
         try{
             userPersist.checkUsername(user);
+            userPersist.saveUser(user);
+            logger.debug(toString()+ " persisted to database");
+        
 
         }catch(IllegalArgumentException iae){
             errMessage = iae.getMessage();        
@@ -77,9 +80,6 @@ public class UserApplication extends Controller {
  
         }
         
-		userPersist.saveUser(user);
-        logger.debug(toString()+ " persisted to database");
-        userPersist.saveUser(user);
         return redirect(routes.LogInApplication.index());
     }
 

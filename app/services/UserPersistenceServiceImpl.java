@@ -39,21 +39,9 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 				   if(isUsernameValid(user)&&isPasswordValid(user)){
 					   em.persist(user);
 				   }
-				   else{
-					   throw new IllegalArgumentException("Invalid username or password; avoid entering special characters into the username and only entering spaces in either");
-				   }
 				}
-				else{
-					throw new IllegalArgumentException("Cannot persist user; illegal ID");
-				}
-			}
-			else{
-				throw new NullPointerException("A user must have both a name and password");
 			}
         }
-		else{
-			throw new NullPointerException("A null object cannot be persisted to the database.");
-		}
 	}
 	
 		
@@ -99,6 +87,10 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 			logger.debug("Username taken: "+user.toString());
 		}
 		
+        if (isPasswordValid(user)) {
+            logger.debug("Password is invalid");
+        }
+
 		return validUsername;
     }
 		
@@ -120,13 +112,18 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		 
 		 if(user != null){
 			 isUserNull = false;
-		 }
+		 }else{
+            logger.debug("User is null");
+            throw new java.lang.NullPointerException("User is null");
+         }
 		 
 		 return isUserNull;
 	 }
 
 	/**
 	 * checks to make sure the ID is not set
+     * returns true if the id is set
+     * returns false if the id is not set.
 	 * @param User user
 	 * @return boolean userIDIsSet
 	 **/	
@@ -135,6 +132,8 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 	
 		if(user.getID() != null){
 			userIDIsSet = true;
+            logger.debug("No ID was already set.");
+            throw new java.lang.NullPointerException("Error in persisting.");
 		}
 	
 		return userIDIsSet;		
@@ -150,8 +149,9 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
         boolean userIsIncomplete = false;
         if(user.getUsername().equals(null) || user.getPassword().equals(null)){
             userIsIncomplete = true;
+            logger.debug("Username or password is empty");
+            throw new java.lang.NullPointerException("Username or Password is empty");
         }
-
         return userIsIncomplete;
         
     }
@@ -210,7 +210,10 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		
 		if(!passWord.equals("")){
 			passwordIsValid = true;
-		}
+            logger.debug("Password is empty or contained spaces");
+		}else{
+            throw new java.lang.IllegalArgumentException("Password cannot contain spaces");
+        }
 	    
 		return passwordIsValid;
 	}
