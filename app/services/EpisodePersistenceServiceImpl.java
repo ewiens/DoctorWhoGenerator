@@ -5,6 +5,7 @@ import models.Episode;
 import java.util.List;
 
 import javax.inject.Named;
+//import javax.validation.ConstraintViolationException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -28,7 +29,12 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 			if(!isEpisodeIncomplete(episode)){
 				if(!isEpisodeIdSet(episode)){
 					if(episodeIsValid(episode)){
-						em.persist(episode);
+						if(areLengthConstraintsMet(episode)){
+						    em.persist(episode);
+						}
+						else{
+							throw new IllegalArgumentException("One or more fields violates the minimum or maximum length bounds: 3-30 for Episode name, 4-20 for Doctor name, 4-30 for Companion name, 20-500 for plot description");
+						}
 					}
 					else{
 						throw new IllegalArgumentException("One or more fields contain illegal arguments. Avoid special characters and only entering spaces");
@@ -47,6 +53,23 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		}		
 	}
 
+	/**
+	 *checks if the episode parameters meet the length requirements
+	 *@param Episode episode
+	 *@return boolean lengthConstraintsAreMet
+	 **/
+	private boolean areLengthConstraintsMet(Episode episode){
+		boolean lengthConstraintsAreMet = false;
+		
+		if(episode.getCompanionName().length()>=4&&episode.getEpisodeName().length()>=3&&episode.getDoctorName().length()>=4&&episode.getPlotDescription().length()>=20){
+			if(episode.getCompanionName().length()<=30&&episode.getEpisodeName().length()<=30&&episode.getDoctorName().length()<=20&&episode.getPlotDescription().length()<=500){
+			    lengthConstraintsAreMet = true;
+			}
+		}
+		
+		return lengthConstraintsAreMet;
+	}
+	
 	/**
 	 *checks if the episode object passed is null
 	 *@param Episode episode

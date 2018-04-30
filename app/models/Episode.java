@@ -74,8 +74,7 @@ public class Episode {
 	 * @param String episodeName 
 	 **/		
 	public void setEpisodeName(String episodeName){
-		this.episodeNa
-		me = episodeName;
+		this.episodeName = episodeName;
 	}
 
 	/**

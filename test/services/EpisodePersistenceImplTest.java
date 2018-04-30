@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
+//import javax.validation.ConstraintViolationException;
 
 import configs.AppConfig;
 import configs.TestDataConfig;
@@ -76,8 +77,8 @@ public void saveInvalidCompanionName(){
     assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	
 	Episode validNewEpisode = new Episode();
-	validNewEpisode.setEpisodeName("This is a valid new episode name");
-	validNewEpisode.setDoctorName("This is a valid new episode doctor");
+	validNewEpisode.setEpisodeName("ValidName");
+	validNewEpisode.setDoctorName("ValidDocName");
 	validNewEpisode.setCompanionName("");
 	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	
@@ -98,8 +99,8 @@ public void saveInvalidEpisodeName(){
 	
 	Episode validNewEpisode = new Episode();
 	validNewEpisode.setEpisodeName("");
-	validNewEpisode.setDoctorName("This is a valid new episode doctor");
-	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setDoctorName("ValidDocName");
+	validNewEpisode.setCompanionName("ValidCompName");
 	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	try{	
 	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
@@ -118,8 +119,8 @@ public void saveNullEpisodeName(){
 	
 	Episode validNewEpisode = new Episode();
 	validNewEpisode.setEpisodeName(null);
-	validNewEpisode.setDoctorName("This is a valid new episode doctor");
-	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setDoctorName("ValidDocName");
+	validNewEpisode.setCompanionName("ValidCompName");
 	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	try{	
 	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
@@ -137,9 +138,9 @@ public void saveNullDoctorName(){
     assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	
 	Episode validNewEpisode = new Episode();
-	validNewEpisode.setEpisodeName("This is a valid new episode name");
+	validNewEpisode.setEpisodeName("ValidName");
 	validNewEpisode.setDoctorName(null);
-	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setCompanionName("ValidCompName");
 	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	try{	
 	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
@@ -157,8 +158,8 @@ public void saveNullCompanionName(){
     assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	
 	Episode validNewEpisode = new Episode();
-	validNewEpisode.setEpisodeName("This is a valid new episode name");
-	validNewEpisode.setDoctorName("This is a valid new episode doctor");
+	validNewEpisode.setEpisodeName("ValidName");
+	validNewEpisode.setDoctorName("ValidDocName");
 	validNewEpisode.setCompanionName(null);
 	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	try{	
@@ -177,9 +178,9 @@ public void saveNullPlotDescription(){
     assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	
 	Episode validNewEpisode = new Episode();
-	validNewEpisode.setEpisodeName("This is a valid new episode name");
-	validNewEpisode.setDoctorName("This is a valid new episode doctor");
-	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setEpisodeName("ValidName");
+	validNewEpisode.setDoctorName("ValidDocName");
+	validNewEpisode.setCompanionName("ValidCompName");
 	validNewEpisode.setPlotDescription(null);
 	try{	
 	    assertNull("the ID has not been set for validNewEpisode",validNewEpisode.getID());
@@ -197,9 +198,9 @@ public void saveInvalidDoctorName(){
     assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	
 	Episode validNewEpisode = new Episode();
-	validNewEpisode.setEpisodeName("This is a valid new episode name");
+	validNewEpisode.setEpisodeName("ValidName");
 	validNewEpisode.setDoctorName("");
-	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setCompanionName("ValidCompName");
 	validNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	
 	try{
@@ -218,9 +219,9 @@ public void saveInvalidPlotDescription(){
     assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	
 	Episode validNewEpisode = new Episode();
-	validNewEpisode.setEpisodeName("This is a valid new episode name");
-	validNewEpisode.setDoctorName("This is a valid new episode doctor");
-	validNewEpisode.setCompanionName("This is a valid new episode companion");
+	validNewEpisode.setEpisodeName("ValidName");
+	validNewEpisode.setDoctorName("ValidDocName");
+	validNewEpisode.setCompanionName("ValidCompName");
 	validNewEpisode.setPlotDescription("");
 	
 	try{
@@ -240,9 +241,9 @@ public void saveInvalidIDEpisode(){
     assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	try{
 	   Episode invalidIDEpisode = new Episode();
-	   invalidIDEpisode.setEpisodeName("This is a valid new episode name");
-	   invalidIDEpisode.setDoctorName("This is a valid new episode doctor");
-	   invalidIDEpisode.setCompanionName("This is a valid new episode companion");
+	   invalidIDEpisode.setEpisodeName("ValidName");
+	   invalidIDEpisode.setDoctorName("ValidDocName");
+	   invalidIDEpisode.setCompanionName("ValidCompName");
 	   invalidIDEpisode.setPlotDescription("This is a valid new episode plot description");
 	   invalidIDEpisode.setID(1L);
 	   episodePersitence.saveEpisode(invalidIDEpisode);
@@ -260,9 +261,9 @@ public void saveValidNewEpisodeOnTableWithOneItem(){
     assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	
 	Episode firstValidNewEpisode = new Episode();
-	firstValidNewEpisode.setEpisodeName("This is a valid new episode name");
-	firstValidNewEpisode.setDoctorName("This is a valid new episode doctor");
-	firstValidNewEpisode.setCompanionName("This is a valid new episode companion");
+	firstValidNewEpisode.setEpisodeName("ValidName");
+	firstValidNewEpisode.setDoctorName("ValidDocName");
+	firstValidNewEpisode.setCompanionName("ValidCompName");
 	firstValidNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	
 	assertNull("the ID has not been set for firstValidNewEpisode",firstValidNewEpisode.getID());
@@ -272,9 +273,9 @@ public void saveValidNewEpisodeOnTableWithOneItem(){
 	assertTrue("there is a single entry in the database",episodePersitence.fetchAllEpisodes().size() == 1);
 	
 	Episode secondValidNewEpisode = new Episode();
-	secondValidNewEpisode.setEpisodeName("This is a valid new episode name");
-	secondValidNewEpisode.setDoctorName("This is a valid new episode doctor");
-	secondValidNewEpisode.setCompanionName("This is a valid new episode companion");
+	secondValidNewEpisode.setEpisodeName("ValidName");
+	secondValidNewEpisode.setDoctorName("ValidDocName");
+	secondValidNewEpisode.setCompanionName("ValidCompName");
 	secondValidNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	
 	assertNull("the ID has not been set for secondValidNewEpisode",secondValidNewEpisode.getID());
@@ -287,9 +288,9 @@ public void saveValidNewEpisodeOnTableWithOneItem(){
 @Test
 public void saveExistingEpisodeTest() {
 	final Episode e = new Episode();
-	e.setEpisodeName("This is a valid new episode name");
-	e.setDoctorName("This is a valid new episode doctor");
-	e.setCompanionName("This is a valid new episode companion");
+	e.setEpisodeName("ValidName");
+	e.setDoctorName("ValidCompName");
+	e.setCompanionName("ValidCompName");
 	e.setPlotDescription("This is a valid new episode plot description");
 	episodePersitence.saveEpisode(e);
 	assertNotNull("The ID should be set", e.getID());
@@ -313,9 +314,9 @@ public void saveInValidNewEpisodeOnTableWithOneItem(){
     assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
 	
 	Episode firstValidNewEpisode = new Episode();
-	firstValidNewEpisode.setEpisodeName("This is a valid new episode name");
-	firstValidNewEpisode.setDoctorName("This is a valid new episode doctor");
-	firstValidNewEpisode.setCompanionName("This is a valid new episode companion");
+	firstValidNewEpisode.setEpisodeName("ValidName");
+	firstValidNewEpisode.setDoctorName("ValidDocName");
+	firstValidNewEpisode.setCompanionName("ValidCompName");
 	firstValidNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	
 	assertNull("the ID has not been set for firstValidNewEpisode",firstValidNewEpisode.getID());
@@ -326,8 +327,8 @@ public void saveInValidNewEpisodeOnTableWithOneItem(){
 	
 	Episode secondInValidNewEpisode = new Episode();
 	secondInValidNewEpisode.setEpisodeName("");
-	secondInValidNewEpisode.setDoctorName("This is a valid new episode doctor");
-	secondInValidNewEpisode.setCompanionName("This is a valid new episode companion");
+	secondInValidNewEpisode.setDoctorName("ValidDocName");
+	secondInValidNewEpisode.setCompanionName("ValidCompName");
 	secondInValidNewEpisode.setPlotDescription("This is a valid new episode plot description");
 	
 	assertNull("the ID has not been set for secondValidNewEpisode",secondInValidNewEpisode.getID());
@@ -339,6 +340,202 @@ public void saveInValidNewEpisodeOnTableWithOneItem(){
 	}//assertNotNull("the ID has been set for secondValidNewEpisode",secondValidNewEpisode.getID());
     
 	assertTrue("there is still one entry in the database",episodePersitence.fetchAllEpisodes().size() == 1);
+}
+
+@Test
+public void testEpisodeNameMaxLength(){
+	//some of this test syntax inspired by theButton
+	// https://github.com/YogoGit/theButton
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidEpisodeName = new Episode();
+	invalidEpisodeName.setEpisodeName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+	invalidEpisodeName.setDoctorName("ValidDocName");
+	invalidEpisodeName.setCompanionName("ValidCompName");
+	invalidEpisodeName.setPlotDescription("This is a valid new episode plot description");
+	
+	try{
+	assertNull("the ID has not been set for invalidEpisodeName",invalidEpisodeName.getID());
+	episodePersitence.saveEpisode(invalidEpisodeName);
+	//assertTrue("there are no episodes in the database",episodePersitence.fetchAllEpisodes().size() == 0);
+		fail("This should have failed since the episode name is too long");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid doctor name");
+		//error message
+	}
+}
+
+@Test
+public void testEpisodeNameMinLength(){
+	//some of this test syntax inspired by theButton
+	// https://github.com/YogoGit/theButton
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidEpisodeName = new Episode();
+	invalidEpisodeName.setEpisodeName("aa");
+	invalidEpisodeName.setDoctorName("ValidDocName");
+	invalidEpisodeName.setCompanionName("ValidCompName");
+	invalidEpisodeName.setPlotDescription("This is a valid new episode plot description");
+	
+	try{
+	assertNull("the ID has not been set for invalidEpisodeName",invalidEpisodeName.getID());
+	episodePersitence.saveEpisode(invalidEpisodeName);
+	//assertTrue("there are no episodes in the database",episodePersitence.fetchAllEpisodes().size() == 0);
+		fail("This should have failed since the episode name is too short");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid doctor name");
+		//error message
+	}
+}
+
+
+@Test
+public void testDoctorNameMaxLength(){
+	//some of this test syntax inspired by theButton
+	// https://github.com/YogoGit/theButton
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidDoctorName = new Episode();
+	invalidDoctorName.setEpisodeName("ValidName");
+	invalidDoctorName.setDoctorName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+	invalidDoctorName.setCompanionName("ValidCompName");
+	invalidDoctorName.setPlotDescription("This is a valid new episode plot description");
+	
+	try{
+	assertNull("the ID has not been set for invalidDoctorName",invalidDoctorName.getID());
+	episodePersitence.saveEpisode(invalidDoctorName);
+	//assertTrue("there are no episodes in the database",episodePersitence.fetchAllEpisodes().size() == 0);
+		fail("This should have failed since the doctor's name is too long");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid doctor name");
+		//error message
+	}
+}
+
+@Test
+public void testDoctorNameMinLength(){
+	//some of this test syntax inspired by theButton
+	// https://github.com/YogoGit/theButton
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidDoctorName = new Episode();
+	invalidDoctorName.setEpisodeName("ValidName");
+	invalidDoctorName.setDoctorName("aa");
+	invalidDoctorName.setCompanionName("ValidCompName");
+	invalidDoctorName.setPlotDescription("This is a valid new episode plot description");
+	
+	try{
+	assertNull("the ID has not been set for invalidDoctorName",invalidDoctorName.getID());
+	episodePersitence.saveEpisode(invalidDoctorName);
+	//assertTrue("there are no episodes in the database",episodePersitence.fetchAllEpisodes().size() == 0);
+		fail("This should have failed since the doctor's name is too short");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid doctor name");
+		//error message
+	}
+
+}
+
+@Test
+public void testCompanionNameMaxLength(){
+	//some of this test syntax inspired by theButton
+	// https://github.com/YogoGit/theButton
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidCompanionName = new Episode();
+	invalidCompanionName.setEpisodeName("ValidName");
+	invalidCompanionName.setDoctorName("ValidDocName");
+	invalidCompanionName.setCompanionName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+	invalidCompanionName.setPlotDescription("This is a valid new episode plot description");
+	
+	try{
+	assertNull("the ID has not been set for invalidCompanionName",invalidCompanionName.getID());
+	episodePersitence.saveEpisode(invalidCompanionName);
+	//assertTrue("there are no episodes in the database",episodePersitence.fetchAllEpisodes().size() == 0);
+		fail("This should have failed since the companion's name is too long");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid doctor name");
+		//error message
+	}
+}
+
+@Test
+public void testCompanionNameMinLength(){
+	//some of this test syntax inspired by theButton
+	// https://github.com/YogoGit/theButton
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidCompanionName = new Episode();
+	invalidCompanionName.setEpisodeName("ValidName");
+	invalidCompanionName.setDoctorName("ValidDocName");
+	invalidCompanionName.setCompanionName("aa");
+	invalidCompanionName.setPlotDescription("This is a valid new episode plot description");
+	
+	try{
+	assertNull("the ID has not been set for invalidCompanionName",invalidCompanionName.getID());
+	episodePersitence.saveEpisode(invalidCompanionName);
+	//assertTrue("there are no episodes in the database",episodePersitence.fetchAllEpisodes().size() == 0);
+		fail("This should have failed since the companion's name is too short");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid doctor name");
+		//error message
+	}
+
+}
+
+@Test
+public void testPlotDescriptionMaxLength(){
+	//some of this test syntax inspired by theButton
+	// https://github.com/YogoGit/theButton
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidPlotDescription = new Episode();
+	invalidPlotDescription.setEpisodeName("ValidName");
+	invalidPlotDescription.setDoctorName("ValidDocName");
+	invalidPlotDescription.setCompanionName("ValidCompName");
+	invalidPlotDescription.setPlotDescription("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+	
+	try{
+	assertNull("the ID has not been set for invalidPlotDescription",invalidPlotDescription.getID());
+	episodePersitence.saveEpisode(invalidPlotDescription);
+	//assertTrue("there are no episodes in the database",episodePersitence.fetchAllEpisodes().size() == 0);
+		fail("This should have failed since the companion's name is too long");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid doctor name");
+		//error message
+	}
+}
+
+@Test
+public void testPlotDescriptionMinLength(){
+	//some of this test syntax inspired by theButton
+	// https://github.com/YogoGit/theButton
+    assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidPlotDescription = new Episode();
+	invalidPlotDescription.setEpisodeName("ValidName");
+	invalidPlotDescription.setDoctorName("ValidDocName");
+	invalidPlotDescription.setCompanionName("ValidCompName");
+	invalidPlotDescription.setPlotDescription("aaaa");
+	
+	try{
+	assertNull("the ID has not been set for invalidPlotDescription",invalidPlotDescription.getID());
+	episodePersitence.saveEpisode(invalidPlotDescription);
+	//assertTrue("there are no episodes in the database",episodePersitence.fetchAllEpisodes().size() == 0);
+		fail("This should have failed since the companion's name is too short");
+	} 
+    catch(IllegalArgumentException iae){
+		//System.out.println("Cannot save the episode; invalid doctor name");
+		//error message
+	}
+
 }
 
 }

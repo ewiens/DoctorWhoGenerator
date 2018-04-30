@@ -21,20 +21,28 @@ import org.slf4j.LoggerFactory;
 
 
 @Named
+/**
+ * controls how the application reacts when a user is attempting to log in
+ **/
 public class LogInApplication extends Controller {
 
     @Inject
     private UserPersistenceService userPersist;
 
-
     private static final  Logger logger = LoggerFactory.getLogger(LogInApplication.class);
 
+	/**
+	 * Renders the page when the user initially connects or finishes creating a user
+	 * @return Result
+	 **/	
     public Result index() {
         return ok(index.render("Welcome",play.data.Form.form(User.class))); 
-        // ok is the type of response
-        // hidden method (render) lets me get into scala template (index)
     }
     
+	/**
+	 * validates a user's attempt to login before either displaying an error message or redirecting them to create an episode
+	 * @return Result
+	 **/	
     public Result logIn(){
         Form<User> form  = Form.form(User.class).bindFromRequest();
         if (form.hasErrors()) {
@@ -55,6 +63,10 @@ public class LogInApplication extends Controller {
         }
     }
 
+	/**
+	 * redirects a user to create a user
+	 * @return Result
+	 **/	
     public Result newUser(){
         return redirect(routes.UserApplication.index());
     }
