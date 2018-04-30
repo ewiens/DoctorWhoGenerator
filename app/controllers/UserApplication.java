@@ -60,22 +60,24 @@ public class UserApplication extends Controller {
         
 		String errMessage = "That username already exists or is invalid, please enter a different username";
 		
-        if (!userPersist.checkUsername(user)) {
-            if (!userPersist.isUsernameValid(user)) {
-                form.reject("username","Username contains an invalid character");
-                return badRequest(createuser.render("Welcome",form));
-            }
+        try{
+            userPersist.checkUsername(user);
 
-            if (userPersist.isUsernameTaken()) {
-                form.reject("username","Username is already taken");
-                return badRequest(createuser.render("Welcome",form));            
-            }
-            form.reject("username","Username contains an invalid character or is already taken");
+        }catch(IllegalArgumentException iae){
+            errMessage = iae.getMessage();        
+            form.reject("username",errMessage);
+            logger.debug(user.toString()+"recieved error"+errMessage);
             return badRequest(createuser.render("Welcome",form));
+            
+        }catch(NullPointerException npe){
+            errMessage = npe.getMessage();        
+            form.reject("username",errMessage);
+            logger.debug(user.toString()+"recieved error"+errMessage);
+            return badRequest(createuser.render("Welcome",form));
+ 
         }
-
         
-		
+		userPersist.saveUser(user);
         logger.debug(toString()+ " persisted to database");
         userPersist.saveUser(user);
         return redirect(routes.LogInApplication.index());

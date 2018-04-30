@@ -156,6 +156,7 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
         
     }
 	
+
 	/**
 	 * checks if the username is blank or contains special characters
 	 * returns false if the username has invalid characters
@@ -183,10 +184,11 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 				||userName.contains(">")
 				||userName.contains(",")){
 			    validUsername = false;
-
+			    throw new java.lang.IllegalArgumentException("Username contains invalid characters");
 			}
-			//error about special characters
-		}
+		}else{
+            throw new java.lang.IllegalArgumentException("Username is empty");
+        }
 		
 		return validUsername;
 		
@@ -213,6 +215,7 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		return passwordIsValid;
 	}
 	
+
 	/**
 	 * checks if the username already exists in the database
 	 * returns true if the username has already been taken
@@ -230,6 +233,8 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
             .getResultList();
         if (myResults.size()==0) {
             usernameIsTaken = false;
+         }else{
+            throw new java.lang.IllegalArgumentException("Username is taken");
         }
 		
 		return usernameIsTaken;

@@ -32,23 +32,6 @@ public interface UserPersistenceService {
 	 **/	
 	boolean checkUsername(User u);
 
-	/**
-	 * checks if the username already exists in the database
-	 * returns true if the username has already been taken
-	 * returns false if the username is not in the database yet
-	 * @param User user
-	 * @return boolean 
-	 **/
-	boolean isUsernameTaken(User u);
-    	
-	/**
-	 * checks if the password is blank
-	 * returns true if the password is not empty
-	 * returns false if the password is empty
-	 * @param User user
-	 * @return boolean passwordIsValid
-	 **/	
-	boolean isUsernameValid(User u);
 	
 	/**
 	 * returns all the users in the database
