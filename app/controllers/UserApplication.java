@@ -56,31 +56,31 @@ public class UserApplication extends Controller {
         User user = new User();
         user.setUsername(form.get().getUsername());
         user.setPassword(form.get().getPassword());
+
         
 		String errMessage = "That username already exists or is invalid, please enter a different username";
 		
-		try{
-		//check to see if the username is a valid option
-            if(userPersist.checkUsername(user)){
-                logger.debug(toString()+ " persisted to database");
-                userPersist.saveUser(user);
-                return redirect(routes.LogInApplication.index());//
-            }
-		}
-		catch(IllegalArgumentException iae){
-		    errMessage = iae.getMessage();
-			form.reject(iae.getMessage());
-			logger.debug(toString()+ " recieved error"+iae.getMessage());
-		    //return badRequest(createuser.render("Welcome",form));
-		}			
-		catch(NullPointerException npe){
-		    errMessage = npe.getMessage();
-			form.reject(npe.getMessage());
-			logger.debug(toString()+ " recieved error"+npe.getMessage());
-			
-		}
-		form.reject("username",errMessage);
-        return badRequest(createuser.render("Welcome",form));
+        try{
+            userPersist.checkUsername(user);
+
+        }catch(IllegalArgumentException iae){
+            errMessage = iae.getMessage();        
+            form.reject("username",errMessage);
+            logger.debug(user.toString()+"recieved error"+errMessage);
+            return badRequest(createuser.render("Welcome",form));
+            
+        }catch(NullPointerException npe){
+            errMessage = npe.getMessage();        
+            form.reject("username",errMessage);
+            logger.debug(user.toString()+"recieved error"+errMessage);
+            return badRequest(createuser.render("Welcome",form));
+ 
+        }
+        
+		userPersist.saveUser(user);
+        logger.debug(toString()+ " persisted to database");
+        userPersist.saveUser(user);
+        return redirect(routes.LogInApplication.index());
     }
 
     public Result toLogin(){

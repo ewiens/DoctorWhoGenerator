@@ -9,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * provides persistence to the database and validates imput for users as 
@@ -16,6 +18,9 @@ import javax.transaction.Transactional;
  **/
 @Named       
 public class UserPersistenceServiceImpl implements UserPersistenceService {
+
+    private static final  Logger logger = LoggerFactory.getLogger(UserPersistenceServiceImpl.class);
+
 
     @PersistenceContext
     private EntityManager em;
@@ -84,9 +89,14 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
         boolean validUsername = false;
 		
 		if(!isUsernameTaken(user)){
+			logger.debug("Username not taken: "+user.toString());
 		    if(isUsernameValid(user)){
+		    	logger.debug("Username valid: "+user.toString());
 			    validUsername = true;
 			}
+			logger.debug("Username not valid: "+user.toString());
+		}else {
+			logger.debug("Username taken: "+user.toString());
 		}
 		
 		return validUsername;
@@ -131,7 +141,8 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
      }
 	    
 	/**
-	 * checks if the user information has null values. Will return true if a null value is detected
+	 * checks if the user information has null values. 
+	 * Will return true if a null value is detected
 	 * @param User user
 	 * @return boolean 
 	 **/
@@ -145,14 +156,17 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
         
     }
 	
+
 	/**
 	 * checks if the username is blank or contains special characters
+	 * returns false if the username has invalid characters
+	 * returns true if the username is valid
 	 * @param User user
 	 * @return boolean validUsername
 	 **/
 	private boolean isUsernameValid(User user){
 		
-		boolean validUsername = false;
+		boolean validUsername = true;
 		
 		//if username is a blank string
 		String userName = user.getUsername();
@@ -161,25 +175,30 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		
 		if(!userName.equals("")||!onlySpaces.equals(".")){
 			//error about blank users
-			if(!userName.contains(";")
-				&&!userName.contains("/")
-				&&!userName.contains("~")
-				&&!userName.contains("`")
-				&&!userName.contains("#")
-				&&!userName.contains("-")
-				&&!userName.contains(">")
-				&&!userName.contains(",")){
-			    validUsername = true;
+			if(userName.contains(";")
+				||userName.contains("/")
+				||userName.contains("~")
+				||userName.contains("`")
+				||userName.contains("#")
+				||userName.contains("-")
+				||userName.contains(">")
+				||userName.contains(",")){
+			    validUsername = false;
+			    throw new java.lang.IllegalArgumentException("Username contains invalid characters");
 			}
-			//error about special characters
-		}
+		}else{
+            throw new java.lang.IllegalArgumentException("Username is empty");
+        }
 		
 		return validUsername;
 		
 	}
 
+
 	/**
 	 * checks if the password is blank
+	 * returns true if the password is not empty
+	 * returns false if the password is empty
 	 * @param User user
 	 * @return boolean passwordIsValid
 	 **/	
@@ -196,8 +215,11 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		return passwordIsValid;
 	}
 	
+
 	/**
 	 * checks if the username already exists in the database
+	 * returns true if the username has already been taken
+	 * returns false if the username is not in the database yet
 	 * @param User user
 	 * @return boolean 
 	 **/	
@@ -211,6 +233,8 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
             .getResultList();
         if (myResults.size()==0) {
             usernameIsTaken = false;
+         }else{
+            throw new java.lang.IllegalArgumentException("Username is taken");
         }
 		
 		return usernameIsTaken;
