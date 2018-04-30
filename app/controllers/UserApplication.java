@@ -60,29 +60,25 @@ public class UserApplication extends Controller {
         
 		String errMessage = "That username already exists or is invalid, please enter a different username";
 		
-		try{
-		//check to see if the username is a valid option
-
-            if(userPersist.checkUsername(user)){
-                logger.debug(toString()+ " persisted to database");
-                userPersist.saveUser(user);
-                return redirect(routes.LogInApplication.index());//
+        if (!userPersist.checkUsername(user)) {
+            if (!userPersist.isUsernameValid(user)) {
+                form.reject("username","Username contains an invalid character");
+                return badRequest(createuser.render("Welcome",form));
             }
-		}catch(IllegalArgumentException iae){
-		    errMessage = iae.getMessage();
-			form.reject(iae.getMessage());
-			logger.debug(toString()+ " recieved error"+iae.getMessage());
-		    //return badRequest(createuser.render("Welcome",form));
-		}catch(NullPointerException npe){
-		    errMessage = npe.getMessage();
-			form.reject(npe.getMessage());
-			logger.debug(toString()+ " recieved error"+npe.getMessage());
-			
-		}
 
-		form.reject("username",errMessage);
-        return badRequest(createuser.render("Welcome",form));
+            if (userPersist.isUsernameTaken()) {
+                form.reject("username","Username is already taken");
+                return badRequest(createuser.render("Welcome",form));            
+            }
+            form.reject("username","Username contains an invalid character or is already taken");
+            return badRequest(createuser.render("Welcome",form));
+        }
 
+        
+		
+        logger.debug(toString()+ " persisted to database");
+        userPersist.saveUser(user);
+        return redirect(routes.LogInApplication.index());
     }
 
     public Result toLogin(){
