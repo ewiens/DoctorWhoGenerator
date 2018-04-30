@@ -46,14 +46,17 @@ public class UserApplication extends Controller {
         user.setUsername(form.get().getUsername());
         user.setPassword(form.get().getPassword());
 
-        if(userPersist.checkUsername(user)){
-            logger.debug(toString()+ " persisted to database");
-            userPersist.saveUser(user);
-            return redirect(routes.LogInApplication.index());
-        }
-        form.reject("username", "That username already exists, please enter a different username");
+        
+		//check to see if the username is a valid option
+        if(!userPersist.checkUsername(user)){
+            form.reject("username", "That username already exists or is invalid, please enter a different username");
         // return redirect(routes.UserApplication.index());
-        return badRequest(createuser.render("Welcome",form));
+            return badRequest(createuser.render("Welcome",form));        
+        }
+
+        logger.debug(toString()+ " persisted to database");
+        userPersist.saveUser(user);
+        return redirect(routes.LogInApplication.index());
     }
 
     public Result toLogin(){

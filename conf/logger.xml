@@ -16,7 +16,8 @@
  
 	<logger name = "doctor_who" level = "INFO" />
  	<logger name = "controllers" level = "INFO" />
- 
+  	<logger name = "services" level = "DEBUG" />
+
  	<root level ="WARN">
  		<appender-ref ref="STDOUT" />
  		<appender-ref ref="FILE" />

@@ -9,9 +9,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named       
 public class UserPersistenceServiceImpl implements UserPersistenceService {
+
+    private static final  Logger logger = LoggerFactory.getLogger(UserPersistenceServiceImpl.class);
+
 
     @PersistenceContext
     private EntityManager em;
@@ -56,7 +61,63 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 
     @Override
     public boolean checkUsername(User user){
-        List<User> myResults;
+
+        boolean validUsername = false;
+		
+		if(!isUsernameTaken(user)){
+			logger.debug("Username not taken: "+user.toString());
+		    if(isUsernameValid(user)){
+		    	logger.debug("Username valid: "+user.toString());
+			    validUsername = true;
+			}
+			logger.debug("Username not valid: "+user.toString());
+		}else {
+			logger.debug("Username taken: "+user.toString());
+		}
+		
+		return validUsername;
+    }
+	
+	/**
+	 * checks if the username is blank or contains special characters
+	 * @param User user
+	 * @return boolean validUsername
+	 **/
+	public boolean isUsernameValid(User user){
+		
+		boolean validUsername = true;
+		
+		//if username is a blank string
+		String userName = user.getUsername();
+		userName = userName.trim();//"."+	
+		String onlySpaces = "."+userName.trim();
+		
+		if(!userName.equals("")||!onlySpaces.equals(".")){
+			//error about blank users
+			if(userName.contains(";")
+				||userName.contains("/")
+				||userName.contains("~")
+				||userName.contains("`")
+				||userName.contains("#")
+				||userName.contains("-")
+				||userName.contains(">")
+				||userName.contains(",")){
+			    validUsername = false;
+			}
+			//error about special characters
+		}
+		
+		return validUsername;
+		
+	}
+
+	/**
+	 * checks if the username already exists in the database
+	 * @param User user
+	 * @return boolean 
+	 **/	
+	public boolean isUsernameTaken(User user){
+	    List<User> myResults;
 
         myResults = em.createQuery("FROM User user WHERE user.username =:c",User.class)
             .setParameter("c",user.getUsername())
