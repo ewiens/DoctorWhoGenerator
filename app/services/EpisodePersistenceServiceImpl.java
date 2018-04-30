@@ -9,142 +9,243 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * provides persistence to the database and validates imput for episodes
+ **/
 @Named       
 public class EpisodePersistenceServiceImpl implements EpisodePersistenceService {
+
+    private static final  Logger logger = LoggerFactory.getLogger(EpisodePersistenceServiceImpl.class);
 
 	@PersistenceContext
 	private EntityManager em;
 
 	@Transactional
 	@Override
+    /**
+     *see interface EpisodePersistenceService
+     **/
 	public void saveEpisode(Episode episode){
-      //boolean validEpisode = false;
-		
-		if(!isEpisodeIncomplete(episode)){
-			if(!isEpisodeIdSet(episode)){
-				if(episodeIsValid(episode)){
-					em.persist(episode);
+		if(!isEpisodeNull(episode)){
+			if(!isEpisodeIncomplete(episode)){
+				if(!isEpisodeIdSet(episode)){
+					if(episodeIsValid(episode)){
+						em.persist(episode);
+					}
+					else{
+						throw new IllegalArgumentException("One or more fields contain illegal arguments. Avoid special characters and only entering spaces");
+					}
+				}
+				else{
+					throw new IllegalArgumentException("Cannot save episode; illegal ID");
 				}
 			}
-		}
+			else{
+				throw new IllegalArgumentException("An episode requires an episode name, doctor name, companion name, and plot description");
+			}
+	    }
+		else{
+            throw new NullPointerException("A null object cannot be peristed to the database");
+		}		
 	}
 
-	public boolean episodeIsValid(Episode episode){
+	/**
+	 *checks if the episode object passed is null
+	 *@param Episode episode
+	 *@return boolean episodeIsNull
+	 **/
+	private boolean isEpisodeNull(Episode episode){
+		boolean episodeIsNull = false;
+		
+		if(episode == null){
+			episodeIsNull = true;
+		}
+		
+		return episodeIsNull;
+	}
+	
+	/**
+	 * validates the non-null imputs for the episode
+	 * @param Episode episode
+	 * @return boolean episodeIsValid
+	 **/
+	private boolean episodeIsValid(Episode episode){
 		boolean episodeIsValid = false;
+		//validates individual episode imputs
 			if(validEpisodeName(episode.getEpisodeName()) 
 				&& validDoctorName(episode.getDoctorName()) 
 				&& validCompanionName(episode.getCompanionName()) 
 				&& validPlotDescription(episode.getPlotDescription())){
-				// if(validDoctorName(episode.getDoctorName())){
-				// 	if(validCompanionName(episode.getCompanionName())){
-				// 		if(validPlotDescription(episode.getPlotDescription())){
 							episodeIsValid = true;
-						// }
-				// 	}
-				// }
+				logger.debug("Episode is valid");
+			}else{
+				logger.debug("Episode is invalid");
 			}
 		
 		
         return episodeIsValid;
 	}
 
-	public boolean validEpisodeName(String episodeName){
+	/**
+	 * validates the episode name for the episode
+	 * @param String episodeName
+	 * @return boolean episodeNameIsValid
+	 **/	
+	private boolean validEpisodeName(String episodeName){
 		boolean episodeNameIsValid = false;
 		
 		episodeName = episodeName.trim();
 		
 		//check for only spaces
 		if(!episodeName.equals("")){
-			//throw error
 			//check for invalid characters
-			if(!episodeName.contains(";")
-				||!episodeName.contains("#")
-				||!episodeName.contains("$")
-				||!episodeName.contains("--")
-				||!episodeName.contains("$")){
-				
+			if(episodeName.contains(";")
+				||episodeName.contains("#")
+				||episodeName.contains("$")
+				||episodeName.contains("-")
+				||episodeName.contains(">")){
+				episodeNameIsValid = false;
+				logger.debug("Episode name is valid");
+			}else{
 				episodeNameIsValid = true;
+				logger.debug("Episode name is invalid");
 			}
-			//throw error
+		}else{
+			logger.debug("Episode name is empty");
 		}
 		return episodeNameIsValid;	
 			
 			
 	}
 
-	public boolean validDoctorName(String doctorName){
+	/**
+	 * validates the Doctor's name for the episode
+	 * @param String doctorName
+	 * @return boolean doctorNameIsValid
+	 **/	
+	private boolean validDoctorName(String doctorName){
 		boolean doctorNameIsValid = false;
 		
 		doctorName = doctorName.trim();
 		
 		//check for only spaces
 		if(!doctorName.equals("")){
-			//throw error
 			//check for invalid characters
-			if(!doctorName.contains(";")||!doctorName.contains("#")||!doctorName.contains("$")||!doctorName.contains("--")||!doctorName.contains("$")){
+			if(doctorName.contains(";")
+				||doctorName.contains("#")
+				||doctorName.contains("$")
+				||doctorName.contains("-")
+				||doctorName.contains(">")){
 				
+				doctorNameIsValid = false;
+				logger.debug("Doctor name has invalid character");
+			} else{
 				doctorNameIsValid = true;
+				logger.debug("Doctor name is valid");
 			}
-			//throw error
+		}else{
+			logger.debug("Doctor name is empty");
 		}
 		return doctorNameIsValid;	
 			
 			
 	}
 	
-	public boolean validCompanionName(String companionName){
+	/**
+	 * validates the companion's name for the episode
+	 * @param String companionName
+	 * @return boolean companionNameIsValid
+	 **/	
+	private boolean validCompanionName(String companionName){
 		boolean companionNameIsValid = false;
 		
 		companionName = companionName.trim();
 		
 		//check for only spaces
 		if(!companionName.equals("")){
-			//throw error
 			//check for invalid characters
-			if(!companionName.contains(";")||!companionName.contains("#")||!companionName.contains("$")||!companionName.contains("--")||!companionName.contains("$")){
+			if(companionName.contains(";")
+				||companionName.contains("#")
+				||companionName.contains("$")
+				||companionName.contains("-")
+				||companionName.contains(">")){
 				
+				companionNameIsValid = false;
+				logger.debug("Companion name has invalid character");
+
+			}else{
 				companionNameIsValid = true;
+				logger.debug("Companion name is valid");
 			}
-			//throw error
+		}else{
+			logger.debug("Companion name is empty");
 		}
 		return companionNameIsValid;	
 			
 			
 	}
 
-	public boolean validPlotDescription(String plot){
+	/**
+	 * validates the plot description for the episode
+	 * @param String plot
+	 * @return boolean plotIsValid
+	 **/	
+	private boolean validPlotDescription(String plot){
 		boolean plotIsValid = false;
 		
 		plot = plot.trim();
 		
 		//check for only spaces
 		if(!plot.equals("")){
-			//throw error
 			//check for invalid characters
-			if(!plot.contains(";")||!plot.contains("#")||!plot.contains("$")||!plot.contains("--")||!plot.contains("$")){
+			if(plot.contains(";")
+				||plot.contains("#")
+				||plot.contains("$")
+				||plot.contains("-")
+				||plot.contains(">")){
 				
+				plotIsValid = false;
+				logger.debug("Plot description has invalid character");
+			}else{
 				plotIsValid = true;
+				logger.debug("Plot description is valid");
 			}
-			//throw error
+		}else{
+			logger.debug("there is no plot");
 		}
-		return plotIsValid;	
-			
-			
+		return plotIsValid;		
 	}	
 	
-	
-	public boolean isEpisodeIncomplete(Episode episode){
+	/**
+	 * checks to see if any fields are null
+	 * @param Episode episode
+	 * @return boolean episodeIsIncomplete
+	 **/	
+	private boolean isEpisodeIncomplete(Episode episode){
 	    boolean episodeIsIncomplete = false;
 		
-		if(episode.getEpisodeName() == null || episode.getDoctorName() == null ||             episode.getCompanionName() == null || episode.getPlotDescription() == null){
+	    //check if any imput field is null
+		if(episode.getEpisodeName() == null
+		    || episode.getDoctorName() == null 
+		    || episode.getCompanionName() == null
+		    || episode.getPlotDescription() == null){
 			episodeIsIncomplete = true;
+		    logger.debug("Episode is incomplete"+episode.getEpisodeName());
 		}
 
 		return episodeIsIncomplete;
 		
     }
 	
-	public boolean isEpisodeIdSet(Episode episode){
+	/**
+	 * checks to make sure the ID is not set
+	 * @param Episode episode
+	 * @return boolean episodeIDIsSet
+	 **/	
+	private boolean isEpisodeIdSet(Episode episode){
 	    boolean episodeIDIsSet = false;
 	
 		if(episode.getID() != null){
@@ -153,5 +254,13 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 	
 		return episodeIDIsSet;		
      }
+	
+    @Override
+    /**
+     *see interface EpisodePersistenceService
+     **/	 
+	public List<Episode> fetchAllEpisodes(){
+		return em.createQuery("FROM Episode episode ", Episode.class).getResultList();
+	}
 	
 }

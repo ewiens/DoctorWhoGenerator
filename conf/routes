@@ -11,9 +11,11 @@ GET     /assets/*file                controllers.Assets.at(path="/public", file)
 GET     /logIn                       @controllers.LogInApplication.logIn()
 GET     /newUser                     @controllers.LogInApplication.newUser()
 
+#referenced theButton for syntax https://github.com/YogoGit/theButton
 GET     /createUser                  @controllers.UserApplication.index()
 POST    /createUser                  @controllers.UserApplication.createUser()
 
+#referenced theButton for syntax https://github.com/YogoGit/theButton
 GET     /createEpisode               @controllers.FormApplication.enterdata()
 POST    /createEpisode               @controllers.FormApplication.createEpisode()
 
