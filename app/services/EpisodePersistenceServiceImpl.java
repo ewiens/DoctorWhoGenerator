@@ -9,11 +9,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * provides persistence to the database and validates imput for episodes
  **/
 @Named       
 public class EpisodePersistenceServiceImpl implements EpisodePersistenceService {
+
+    private static final  Logger logger = LoggerFactory.getLogger(EpisodePersistenceServiceImpl.class);
 
 	@PersistenceContext
 	private EntityManager em;
@@ -75,6 +80,9 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 				&& validCompanionName(episode.getCompanionName()) 
 				&& validPlotDescription(episode.getPlotDescription())){
 							episodeIsValid = true;
+				logger.debug("Episode is valid");
+			}else{
+				logger.debug("Episode is invalid");
 			}
 		
 		
@@ -94,9 +102,19 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		//check for only spaces
 		if(!episodeName.equals("")){
 			//check for invalid characters
-			if(!episodeName.contains(";")&&!episodeName.contains("#")&&!episodeName.contains("$")&&!episodeName.contains("--")&&!episodeName.contains(">")){
+			if(episodeName.contains(";")
+				||episodeName.contains("#")
+				||episodeName.contains("$")
+				||episodeName.contains("-")
+				||episodeName.contains(">")){
+				episodeNameIsValid = false;
+				logger.debug("Episode name is valid");
+			}else{
 				episodeNameIsValid = true;
+				logger.debug("Episode name is invalid");
 			}
+		}else{
+			logger.debug("Episode name is empty");
 		}
 		return episodeNameIsValid;	
 			
@@ -116,10 +134,20 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		//check for only spaces
 		if(!doctorName.equals("")){
 			//check for invalid characters
-			if(!doctorName.contains(";")&&!doctorName.contains("#")&&!doctorName.contains("$")&&!doctorName.contains("--")&&!doctorName.contains(">")){
+			if(doctorName.contains(";")
+				||doctorName.contains("#")
+				||doctorName.contains("$")
+				||doctorName.contains("-")
+				||doctorName.contains(">")){
 				
+				doctorNameIsValid = false;
+				logger.debug("Doctor name has invalid character");
+			} else{
 				doctorNameIsValid = true;
+				logger.debug("Doctor name is valid");
 			}
+		}else{
+			logger.debug("Doctor name is empty");
 		}
 		return doctorNameIsValid;	
 			
@@ -139,10 +167,21 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		//check for only spaces
 		if(!companionName.equals("")){
 			//check for invalid characters
-			if(!companionName.contains(";")&&!companionName.contains("#")&&!companionName.contains("$")&&!companionName.contains("--")&&!companionName.contains(">")){
+			if(companionName.contains(";")
+				||companionName.contains("#")
+				||companionName.contains("$")
+				||companionName.contains("-")
+				||companionName.contains(">")){
 				
+				companionNameIsValid = false;
+				logger.debug("Companion name has invalid character");
+
+			}else{
 				companionNameIsValid = true;
+				logger.debug("Companion name is valid");
 			}
+		}else{
+			logger.debug("Companion name is empty");
 		}
 		return companionNameIsValid;	
 			
@@ -162,14 +201,22 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 		//check for only spaces
 		if(!plot.equals("")){
 			//check for invalid characters
-			if(!plot.contains(";")&&!plot.contains("#")&&!plot.contains("$")&&!plot.contains("--")&&!plot.contains(">")){
+			if(plot.contains(";")
+				||plot.contains("#")
+				||plot.contains("$")
+				||plot.contains("-")
+				||plot.contains(">")){
 				
+				plotIsValid = false;
+				logger.debug("Plot description has invalid character");
+			}else{
 				plotIsValid = true;
+				logger.debug("Plot description is valid");
 			}
+		}else{
+			logger.debug("there is no plot");
 		}
-		return plotIsValid;	
-			
-			
+		return plotIsValid;		
 	}	
 	
 	/**
@@ -181,8 +228,12 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 	    boolean episodeIsIncomplete = false;
 		
 	    //check if any imput field is null
-		if(episode.getEpisodeName() == null || episode.getDoctorName() == null || episode.getCompanionName() == null || episode.getPlotDescription() == null){
+		if(episode.getEpisodeName() == null
+		    || episode.getDoctorName() == null 
+		    || episode.getCompanionName() == null
+		    || episode.getPlotDescription() == null){
 			episodeIsIncomplete = true;
+		    logger.debug("Episode is incomplete"+episode.getEpisodeName());
 		}
 
 		return episodeIsIncomplete;

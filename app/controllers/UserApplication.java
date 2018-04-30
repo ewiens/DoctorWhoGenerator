@@ -61,6 +61,7 @@ public class UserApplication extends Controller {
 		
 		try{
 		//check to see if the username is a valid option
+
             if(userPersist.checkUsername(user)){
                 logger.debug(toString()+ " persisted to database");
                 userPersist.saveUser(user);
@@ -81,6 +82,7 @@ public class UserApplication extends Controller {
 		}
 		form.reject("username",errMessage);
         return badRequest(createuser.render("Welcome",form));
+
     }
 
     public Result toLogin(){

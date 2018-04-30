@@ -9,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * provides persistence to the database and validates imput for users as 
@@ -16,6 +18,9 @@ import javax.transaction.Transactional;
  **/
 @Named       
 public class UserPersistenceServiceImpl implements UserPersistenceService {
+
+    private static final  Logger logger = LoggerFactory.getLogger(UserPersistenceServiceImpl.class);
+
 
     @PersistenceContext
     private EntityManager em;
@@ -84,9 +89,14 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
         boolean validUsername = false;
 		
 		if(!isUsernameTaken(user)){
+			logger.debug("Username not taken: "+user.toString());
 		    if(isUsernameValid(user)){
+		    	logger.debug("Username valid: "+user.toString());
 			    validUsername = true;
 			}
+			logger.debug("Username not valid: "+user.toString());
+		}else {
+			logger.debug("Username taken: "+user.toString());
 		}
 		
 		return validUsername;
@@ -152,7 +162,7 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 	 **/
 	private boolean isUsernameValid(User user){
 		
-		boolean validUsername = false;
+		boolean validUsername = true;
 		
 		//if username is a blank string
 		String userName = user.getUsername();
@@ -161,15 +171,16 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		
 		if(!userName.equals("")||!onlySpaces.equals(".")){
 			//error about blank users
-			if(!userName.contains(";")
-				&&!userName.contains("/")
-				&&!userName.contains("~")
-				&&!userName.contains("`")
-				&&!userName.contains("#")
-				&&!userName.contains("-")
-				&&!userName.contains(">")
-				&&!userName.contains(",")){
+			if(userName.contains(";")
+				||userName.contains("/")
+				||userName.contains("~")
+				||userName.contains("`")
+				||userName.contains("#")
+				||userName.contains("-")
+				||userName.contains(">")
+				||userName.contains(",")){
 			    validUsername = true;
+
 			}
 			//error about special characters
 		}
