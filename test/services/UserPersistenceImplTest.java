@@ -76,9 +76,9 @@ public void saveInvalidIDUser(){
 	   userPersistence.saveUser(invalidIDUser);
        fail("This should have failed since id is not blank");
 	   //assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
-	   }
-	catch(IllegalArgumentException iae){
-		
+	}
+	catch(NullPointerException npe){
+		assertEquals("Error in persisting",npe.getMessage());
 	}
 }
 
@@ -92,8 +92,7 @@ public void saveInvalidUsernameUser(){
 	   userPersistence.saveUser(invalidUsernameUser);
        fail("This should have failed since the username is an empty string");
 	   //assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
-	   }
-	catch(IllegalArgumentException iae){
+	}catch(IllegalArgumentException iae){
 		
 	}
 }
@@ -168,7 +167,8 @@ public void saveCopyUsernameTest() {
 	User firstValidNewUser = new User();
 	firstValidNewUser.setUsername("unitTestUsername1");
 	firstValidNewUser.setPassword("unitTestPassword1");
-	
+
+
 	assertNull("the ID has not been set for firstValidNewUser",firstValidNewUser.getID());
 	userPersistence.saveUser(firstValidNewUser);
 	assertNotNull("the ID has been set for firstValidNewUser",firstValidNewUser.getID());
@@ -180,8 +180,12 @@ public void saveCopyUsernameTest() {
 	copyFirstValidNewUser.setPassword("unitTestPassword2");
 	   
 	assertNull("the ID has not been set for secondValidNewUser",copyFirstValidNewUser.getID());
-	if(userPersistence.checkUsername(copyFirstValidNewUser)){
+	try{
+	    userPersistence.checkUsername(copyFirstValidNewUser);
 	    userPersistence.saveUser(copyFirstValidNewUser);
+	    fail("We shouldnt be able to persist the same user");
+	}catch(IllegalArgumentException iae){
+		assertEquals("Username is taken",iae.getMessage());
 	}
 	//assertNotNull("the ID has been set for secondValidNewUser",secondValidNewUser.getID());
     
