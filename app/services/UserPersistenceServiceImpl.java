@@ -9,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * provides persistence to the database and validates imput for users as 
@@ -16,6 +18,9 @@ import javax.transaction.Transactional;
  **/
 @Named       
 public class UserPersistenceServiceImpl implements UserPersistenceService {
+
+    private static final  Logger logger = LoggerFactory.getLogger(UserPersistenceServiceImpl.class);
+
 
     @PersistenceContext
     private EntityManager em;
@@ -34,21 +39,9 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 				   if(isUsernameValid(user)&&isPasswordValid(user)){
 					   em.persist(user);
 				   }
-				   else{
-					   throw new IllegalArgumentException("Invalid username or password; avoid entering special characters into the username and only entering spaces in either");
-				   }
 				}
-				else{
-					throw new IllegalArgumentException("Cannot persist user; illegal ID");
-				}
-			}
-			else{
-				throw new NullPointerException("A user must have both a name and password");
 			}
         }
-		else{
-			throw new NullPointerException("A null object cannot be persisted to the database.");
-		}
 	}
 	
 		
@@ -84,11 +77,20 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
         boolean validUsername = false;
 		
 		if(!isUsernameTaken(user)){
+			logger.debug("Username not taken: "+user.toString());
 		    if(isUsernameValid(user)){
+		    	logger.debug("Username valid: "+user.toString());
 			    validUsername = true;
 			}
+			logger.debug("Username not valid: "+user.toString());
+		}else {
+			logger.debug("Username taken: "+user.toString());
 		}
 		
+        if (isPasswordValid(user)) {
+            logger.debug("Password is invalid");
+        }
+
 		return validUsername;
     }
 		
@@ -110,13 +112,18 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		 
 		 if(user != null){
 			 isUserNull = false;
-		 }
+		 }else{
+            logger.debug("User is null");
+            throw new java.lang.NullPointerException("User is null");
+         }
 		 
 		 return isUserNull;
 	 }
 
 	/**
 	 * checks to make sure the ID is not set
+     * returns true if the id is set
+     * returns false if the id is not set.
 	 * @param User user
 	 * @return boolean userIDIsSet
 	 **/	
@@ -125,13 +132,16 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 	
 		if(user.getID() != null){
 			userIDIsSet = true;
+            logger.debug("No ID was already set.");
+            throw new java.lang.NullPointerException("Error in persisting.");
 		}
 	
 		return userIDIsSet;		
      }
 	    
 	/**
-	 * checks if the user information has null values. Will return true if a null value is detected
+	 * checks if the user information has null values. 
+	 * Will return true if a null value is detected
 	 * @param User user
 	 * @return boolean 
 	 **/
@@ -139,20 +149,24 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
         boolean userIsIncomplete = false;
         if(user.getUsername().equals(null) || user.getPassword().equals(null)){
             userIsIncomplete = true;
+            logger.debug("Username or password is empty");
+            throw new java.lang.NullPointerException("Username or Password is empty");
         }
-
         return userIsIncomplete;
         
     }
 	
+
 	/**
 	 * checks if the username is blank or contains special characters
+	 * returns false if the username has invalid characters
+	 * returns true if the username is valid
 	 * @param User user
 	 * @return boolean validUsername
 	 **/
 	private boolean isUsernameValid(User user){
 		
-		boolean validUsername = false;
+		boolean validUsername = true;
 		
 		//if username is a blank string
 		String userName = user.getUsername();
@@ -161,25 +175,30 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		
 		if(!userName.equals("")||!onlySpaces.equals(".")){
 			//error about blank users
-			if(!userName.contains(";")
-				&&!userName.contains("/")
-				&&!userName.contains("~")
-				&&!userName.contains("`")
-				&&!userName.contains("#")
-				&&!userName.contains("-")
-				&&!userName.contains(">")
-				&&!userName.contains(",")){
-			    validUsername = true;
+			if(userName.contains(";")
+				||userName.contains("/")
+				||userName.contains("~")
+				||userName.contains("`")
+				||userName.contains("#")
+				||userName.contains("-")
+				||userName.contains(">")
+				||userName.contains(",")){
+			    validUsername = false;
+			    throw new java.lang.IllegalArgumentException("Username contains invalid characters");
 			}
-			//error about special characters
-		}
+		}else{
+            throw new java.lang.IllegalArgumentException("Username is empty");
+        }
 		
 		return validUsername;
 		
 	}
 
+
 	/**
 	 * checks if the password is blank
+	 * returns true if the password is not empty
+	 * returns false if the password is empty
 	 * @param User user
 	 * @return boolean passwordIsValid
 	 **/	
@@ -191,13 +210,19 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 		
 		if(!passWord.equals("")){
 			passwordIsValid = true;
-		}
+            logger.debug("Password is empty or contained spaces");
+		}else{
+            throw new java.lang.IllegalArgumentException("Password cannot contain spaces");
+        }
 	    
 		return passwordIsValid;
 	}
 	
+
 	/**
 	 * checks if the username already exists in the database
+	 * returns true if the username has already been taken
+	 * returns false if the username is not in the database yet
 	 * @param User user
 	 * @return boolean 
 	 **/	
@@ -211,6 +236,8 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
             .getResultList();
         if (myResults.size()==0) {
             usernameIsTaken = false;
+         }else{
+            throw new java.lang.IllegalArgumentException("Username is taken");
         }
 		
 		return usernameIsTaken;
