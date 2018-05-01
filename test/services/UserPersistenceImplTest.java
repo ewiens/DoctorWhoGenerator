@@ -78,7 +78,7 @@ public void saveInvalidIDUser(){
 	   //assertTrue("the databse is empty",userPersistence.fetchAllUsers().isEmpty());
 	}
 	catch(NullPointerException npe){
-		assertEquals("Error in persisting",npe.getMessage());
+		assertEquals("Error in persisting.",npe.getMessage());
 	}
 }
 
