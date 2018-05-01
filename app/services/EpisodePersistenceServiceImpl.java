@@ -5,7 +5,6 @@ import models.Episode;
 import java.util.List;
 
 import javax.inject.Named;
-//import javax.validation.ConstraintViolationException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -71,6 +70,10 @@ public class EpisodePersistenceServiceImpl implements EpisodePersistenceService 
 			    lengthConstraintsAreMet = true;
 			}
 		}
+		else{
+			throw new java.lang.IllegalArgumentException("One or more fields violates the minimum or maximum length bounds: 3-30 for Episode name, 4-20 for Doctor name, 4-30 for Companion name, 20-500 for plot description");
+		}
+			
 		
 		return lengthConstraintsAreMet;
 	}

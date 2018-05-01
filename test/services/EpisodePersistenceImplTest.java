@@ -169,7 +169,6 @@ public class EpisodePersistenceImplTest extends AbstractTransactionalJUnit4Sprin
             fail("This should have failed since episode name is invalid");
         }catch(IllegalArgumentException iae){}
     }       
->>>>>>> cc1ad5fb79e6094ab531ca5fe63fb18d075345b6
 
     @Test
     public void saveBlankDoctorName(){
@@ -186,7 +185,8 @@ public class EpisodePersistenceImplTest extends AbstractTransactionalJUnit4Sprin
             episodePersitence.saveEpisode(validNewEpisode);
             fail("This should have failed since doctor name is invalid");
         }catch(NullPointerException npe){
-            assertEquals("Doctor name is empty",npe.getMessage());}
+            assertEquals("Doctor name is empty",npe.getMessage());
+		}
     }       
 
     @Test
@@ -469,6 +469,84 @@ public void testPlotDescriptionMinLength(){
 	} 
     catch(IllegalArgumentException iae){}
 
+}
+
+/////////////////////////////////////////////////;$#->//////////////////////////////////////////////////
+
+@Test
+public void saveInvalidCharacterEpisodeName(){
+	assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidNewEpisode = new Episode();
+	invalidNewEpisode.setEpisodeName("V;lidEpisode");
+	invalidNewEpisode.setDoctorName("ValidDoctor");
+	invalidNewEpisode.setCompanionName("Companion");
+	invalidNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	
+	try{
+		assertNull("the ID has not been set for invalidNewEpisode",invalidNewEpisode.getID());
+		episodePersitence.saveEpisode(invalidNewEpisode);
+		fail("This should have failed since episode name contains an invalid character");
+	}catch(IllegalArgumentException iae){
+		assertEquals("Episode name contains invalid characters",iae.getMessage());
+	}
+} 
+
+@Test
+public void saveInvalidCharacterDoctorName(){
+	assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidNewEpisode = new Episode();
+	invalidNewEpisode.setEpisodeName("ValidEpisode");
+	invalidNewEpisode.setDoctorName("Vali$Doctor");
+	invalidNewEpisode.setCompanionName("Companion");
+	invalidNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	
+	try{
+		assertNull("the ID has not been set for invalidNewEpisode",invalidNewEpisode.getID());
+		episodePersitence.saveEpisode(invalidNewEpisode);
+		fail("This should have failed since doctor name contains an invalid character");
+	}catch(IllegalArgumentException iae){
+		assertEquals("Doctor name contains invalid characters",iae.getMessage());
+	}
+}
+
+@Test
+public void saveInvalidCharacterCompanionName(){
+	assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidNewEpisode = new Episode();
+	invalidNewEpisode.setEpisodeName("ValidEpisode");
+	invalidNewEpisode.setDoctorName("ValidDoctor");
+	invalidNewEpisode.setCompanionName("Co#panion");
+	invalidNewEpisode.setPlotDescription("This is a valid new episode plot description");
+	
+	try{
+		assertNull("the ID has not been set for invalidNewEpisode",invalidNewEpisode.getID());
+		episodePersitence.saveEpisode(invalidNewEpisode);
+		fail("This should have failed since companion name contains an invalid character");
+	}catch(IllegalArgumentException iae){
+		assertEquals("Companion name contains invalid characters",iae.getMessage());
+	}
+}
+
+@Test
+public void saveInvalidCharacterPlotDescription(){
+	assertTrue("the databse is empty",episodePersitence.fetchAllEpisodes().isEmpty());
+	
+	Episode invalidNewEpisode = new Episode();
+	invalidNewEpisode.setEpisodeName("ValidEpisode");
+	invalidNewEpisode.setDoctorName("ValidDoctor");
+	invalidNewEpisode.setCompanionName("Companion");
+	invalidNewEpisode.setPlotDescription(">his is a valid new episode plot description");
+	
+	try{
+		assertNull("the ID has not been set for invalidNewEpisode",invalidNewEpisode.getID());
+		episodePersitence.saveEpisode(invalidNewEpisode);
+		fail("This should have failed since plot description contains an invalid character");
+	}catch(IllegalArgumentException iae){
+		assertEquals("Plot contains invalid characters",iae.getMessage());
+	}
 }
 
 }
