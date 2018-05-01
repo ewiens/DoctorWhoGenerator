@@ -31,7 +31,6 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
      *see interface UserPersistenceService
      **/	 
     public void saveUser(User user){
-        //boolean validUser = false;
         
 		if(!isUserNull(user)){
 			if(!isUserIncomplete(user)){
@@ -61,12 +60,12 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
                 .getResultList();
             //if the user exists, return true
 			if (myResults.size()>0) {
-                userExists = true; //return true
+                userExists = true;
             }
-            //return false;            
+                        
         }
 
-        return userExists;//false       
+        return userExists;       
     }
 
     @Override
